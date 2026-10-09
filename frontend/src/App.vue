@@ -3,13 +3,7 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import EmployeeView from './components/EmployeeView.vue'
 import ManagerView from './components/ManagerView.vue'
 
-interface BackendResponse {
-  message: string
-  detail: string
-  timestamp: string
-}
-
-const response = ref<BackendResponse | null>(null)
+const backendHealthy = ref(true)
 const error = ref<string | null>(null)
 const loading = ref(false)
 const requestDuration = ref<number | null>(null)
@@ -23,19 +17,15 @@ async function checkBackend() {
   loading.value = true
   error.value = null
   const startedAt = performance.now()
-
   try {
-    const result = await fetch('/api/hello')
-    if (!result.ok) {
-      throw new Error(`Backend returned HTTP ${result.status}`)
-    }
-
-    response.value = (await result.json()) as BackendResponse
+    const result = await fetch('/actuator/health')
+    const health = await result.json()
+    backendHealthy.value = result.ok && health.status === 'UP'
     requestDuration.value = Math.round(performance.now() - startedAt)
-  } catch (reason) {
-    response.value = null
+  } catch {
+    backendHealthy.value = false
+    error.value= 'Unable to reach the backend.'
     requestDuration.value = null
-    error.value = reason instanceof Error ? reason.message : 'Unable to reach the backend.'
   } finally {
     loading.value = false
   }
@@ -58,7 +48,7 @@ onUnmounted(() => window.removeEventListener('hashchange', syncRoute))
         <span>PeopleDesk</span>
       </a>
       <div class="header-tools">
-        <span class="environment"><span class="status-dot" :class="{ offline: error }"></span>{{ response ? 'System online' : error ? 'System offline' : 'Connecting' }}</span>
+        <span class="environment"><span class="status-dot" :class="{ offline: error }"></span>{{ backendHealthy ? 'System online' : error ? 'System offline' : 'Connecting' }}</span>
         <button class="refresh-button" type="button" :disabled="loading" aria-label="Refresh system status" title="Refresh system status" @click="checkBackend">↻</button>
       </div>
     </header>
