@@ -20,11 +20,11 @@ public class ActualOvertimeDao {
     @Column(name = "manager_id")
     private Long managerId;
 
-    @Column(name = "ao_status", nullable = false)
-    private String aoStatus;
+    @Column(name = "status", nullable = false)
+    private String status;
 
-    @Column(name = "ao_description")
-    private String aoDescription;
+    @Column(name = "activity")
+    private String activity;
 
     @Column(name = "rendered_hours", nullable = false)
     private Integer renderedHours;
@@ -47,14 +47,14 @@ public class ActualOvertimeDao {
     protected ActualOvertimeDao() {
     }
 
-    public ActualOvertimeDao(Long aoId, Long poId, Long managerId, String aoStatus, String aoDescription,
+    public ActualOvertimeDao(Long aoId, Long poId, Long managerId, String status, String activity,
             Integer renderedHours, BigDecimal earnedHours, LocalDate fillingDate,
             LocalDate actualDate, LocalDate expirationDate, String remarks) {
         this.aoId = aoId;
         this.poId = poId;
         this.managerId = managerId;
-        this.aoStatus = aoStatus;
-        this.aoDescription = aoDescription;
+        this.status = status;
+        this.activity = activity;
         this.renderedHours = renderedHours;
         this.earnedHours = earnedHours;
         this.fillingDate = fillingDate;
@@ -75,12 +75,12 @@ public class ActualOvertimeDao {
         return managerId;
     }
 
-    public String getAoStatus() {
-        return aoStatus;
+    public String getStatus() {
+        return status;
     }
 
-    public String getAoDescription() {
-        return aoDescription;
+    public String getActivity() {
+        return activity;
     }
 
     public Integer getRenderedHours() {

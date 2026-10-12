@@ -36,11 +36,11 @@ CREATE TABLE planned_overtime (
     employee_id BIGINT NOT NULL,
     workday_id BIGINT NOT NULL,
     manager_id BIGINT,
-    ot_description VARCHAR(255),
+    activity VARCHAR(255),
     planned_hours INT NOT NULL,
     filling_date DATE NOT NULL,
     planned_date DATE NOT NULL,
-    po_status VARCHAR(20) NOT NULL,
+    status VARCHAR(20) NOT NULL,
     
     CONSTRAINT fk_po_employee
         FOREIGN KEY (employee_id)
@@ -57,8 +57,8 @@ CREATE TABLE actual_overtime (
     ao_id BIGINT NOT NULL PRIMARY KEY,
     po_id BIGINT NOT NULL,
     manager_id BIGINT,
-    ao_status VARCHAR(20) NOT NULL,
-    ao_description VARCHAR(255),
+    status VARCHAR(20) NOT NULL,
+    activity VARCHAR(255),
     rendered_hours INT NOT NULL,
     earned_hours DECIMAL(10,2) NOT NULL,
     filling_date DATE NOT NULL,
