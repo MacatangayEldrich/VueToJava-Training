@@ -10,4 +10,6 @@ public interface PlannedOvertimeService extends CrudService<PlannedOvertimeDto> 
     PlannedOvertimeDto approve(Long id);
 
     PlannedOvertimeDto reject(Long id);
+    
+    public List<PlannedOvertimeDto> findByEmployeeId(Long employeeId);
 }
