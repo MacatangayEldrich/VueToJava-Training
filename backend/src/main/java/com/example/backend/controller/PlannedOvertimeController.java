@@ -33,6 +33,11 @@ public class PlannedOvertimeController {
         return service.findById(id);
     }
 
+    @GetMapping("/employee/{id}")
+    public List<PlannedOvertimeDto> findByEmployeeId(@PathVariable Long id) {
+        return service.findByEmployeeId(id);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PlannedOvertimeDto create(@RequestBody PlannedOvertimeDto dto) {
