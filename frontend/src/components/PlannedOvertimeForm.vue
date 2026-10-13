@@ -2,19 +2,21 @@
 import { ref } from 'vue'
 
 interface PlannedOvertimeInput {
-	date: string
-	hours: number
-	activity: string
+	poId: number
+	plannedDate: string
+	plannedHours: number
+	poDescription: string
 }
 
 const props = defineProps<{ today: string }>()
 const emit = defineEmits<{ submit: [plan: PlannedOvertimeInput] }>()
 
-const form = ref<PlannedOvertimeInput>({ date: props.today, hours: 1, activity: '' })
+const form = ref<PlannedOvertimeInput>({ poId: 0, plannedDate: props.today, plannedHours: 1, poDescription: '' })
 
 function submitForm() {
+	alert('Values: ' + JSON.stringify(form.value))
 	emit('submit', { ...form.value })
-	form.value = { date: props.today, hours: 1, activity: '' }
+	form.value = { poId: 0, plannedDate: props.today, plannedHours: 1, poDescription: '' }
 }
 </script>
 
@@ -26,17 +28,18 @@ function submitForm() {
 		</div>
 		<label>
 			Planned date
-			<input v-model="form.date" type="date" required />
+			<input v-model="form.plannedDate" type="date" required />
 		</label>
 		<div class="form-row">
 			<label>
 				Planned hours
-				<input v-model.number="form.hours" type="number" min="0.25" step="0.25" required />
+				<input v-model.number="form.plannedHours" type="number" min="0.25" step="0.25" required />
 			</label>
 			<label>
 				Work / reason
-				<input v-model="form.activity" type="text" maxlength="80" placeholder="e.g. Release support" required />
+				<input v-model="form.poDescription" type="text" maxlength="80" placeholder="e.g. Release support" required />
 			</label>
+			<input v-model="form.poId" type="hidden" />
 		</div>
 		<button class="submit-button" type="submit">Add planned overtime <span aria-hidden="true">+</span></button>
 	</form>

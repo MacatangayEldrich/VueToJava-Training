@@ -7,9 +7,10 @@ const workdayTypeStore = useWorkdayTypeStore()
 const { workdayTypes } = storeToRefs(workdayTypeStore)
 
 interface ActualOvertimeInput {
-	dateEarned: string
-	factorRate: number
-	overtimeHours: number
+	actualDate: string
+	renderedHours: number
+	aoDescription: string
+
 }
 
 const props = defineProps<{ today: string }>()
@@ -17,9 +18,9 @@ const emit = defineEmits<{ submit: [entry: ActualOvertimeInput] }>()
 const selectedWorkdayId = ref<number | null>(null)
 
 const form = ref<ActualOvertimeInput>({
-	dateEarned: props.today,
-	factorRate: 1.5,
-	overtimeHours: 1,
+	actualDate: props.today,
+	renderedHours: 1.5,
+	aoDescription: '',
 })
 
 watch(workdayTypes, (types) => {
@@ -33,7 +34,7 @@ function submitForm() {
 	if (!selectedType) return
 
 	emit('submit', { ...form.value, factorRate: selectedType.factorRate })
-	form.value = { dateEarned: props.today, factorRate: 1.5, overtimeHours: 1 }
+	form.value = { actualDate: props.today, renderedHours: 1, aoDescription: '', factorRate: 1.5 }
 }
 </script>
 
@@ -45,12 +46,12 @@ function submitForm() {
 		</div>
 		<label>
 			Date worked
-			<input v-model="form.dateEarned" type="date" required />
+			<input v-model="form.actualDate" type="date" required />
 		</label>
 		<div class="form-row">
 			<label>
 				Overtime hours
-				<input v-model.number="form.overtimeHours" type="number" min="0.25" step="0.25" required />
+				<input v-model.number="form.renderedHours" type="number" min="0.25" step="0.25" required />
 			</label>
 			<label>
 				Workday type
@@ -65,6 +66,10 @@ function submitForm() {
 		<p v-if="workdayTypeStore.loading" class="form-hint">Loading workday types…</p>
 		<p v-else-if="workdayTypeStore.error" class="form-hint" role="alert">{{ workdayTypeStore.error }}</p>
 		<p v-else-if="workdayTypes.length === 0" class="form-hint">No workday types are available.</p>
+		<label>
+			Overtime reason
+			<input v-model="form.aoDescription" type="text" maxlength="80" required />
+			</label>
 		<button class="submit-button coral-submit" type="submit">Record actual overtime <span aria-hidden="true">+</span></button>
 		<p class="form-hint">CTO earned = overtime hours × factor rate. CTO expires 12 months after earning.</p>
 	</form>

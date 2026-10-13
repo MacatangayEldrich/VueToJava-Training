@@ -1,13 +1,11 @@
 <script setup lang="ts">
 interface PlannedOvertime {
-  id: number
-  employeeId: number
+  poId: number
   workdayId: number
-  otDescription: string
+  poDescription: string
   plannedHours: number
-  date: string
-  hours: number
-  activity: string
+  filingDate: string
+  plannedDate: string
 }
 
 defineProps<{ plans: PlannedOvertime[] }>()
@@ -19,6 +17,12 @@ function formatDate(dateValue: string) {
     day: 'numeric',
   })
 }
+
+function editPlannedOT(plan: PlannedOvertime) {
+  alert('Edit button pressed')
+  console.log('Edit planned OT', plan)
+}
+
 </script>
 
 <template>
@@ -28,10 +32,13 @@ function formatDate(dateValue: string) {
       <span class="count-badge">{{ String(plans.length).padStart(2, '0') }}</span>
     </div>
     <div v-if="plans.length" class="plan-list">
-      <article v-for="plan in plans" :key="plan.id" class="plan-item">
-        <time>{{ formatDate(plan.date) }}</time>
-        <strong>{{ plan.activity }}</strong>
-        <span>{{ plan.hours }} planned hours</span>
+      <article v-for="plan in plans" :key="plan.poId" class="plan-item">
+        <time>{{ formatDate(plan.plannedDate) }}</time>
+        <strong>{{ plan.poDescription }}</strong>
+        <span>{{ plan.plannedHours }} Planned hours</span>
+        <button type="button" @click="editPlannedOT(plan)" class="action-btn primary">
+          <span>Edit</span>
+        </button>
       </article>
     </div>
     <p v-else class="empty-state">No overtime planned yet. Add a plan above to keep track of upcoming work.</p>

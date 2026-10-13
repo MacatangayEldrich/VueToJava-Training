@@ -22,43 +22,43 @@ public class PlannedOvertimeDao {
     @Column(name = "manager_id")
     private Long managerId;
 
-    @Column(name = "activity")
-    private String activity;
+    @Column(name = "po_description")
+    private String poDescription;
 
     @Column(name = "planned_hours", nullable = false)
     private Integer plannedHours;
 
-    @Column(name = "filling_date", nullable = false)
-    private LocalDate fillingDate;
+    @Column(name = "filing_date", nullable = false)
+    private LocalDate filingDate;
 
     @Column(name = "planned_date", nullable = false)
     private LocalDate plannedDate;
 
-    @Column(name = "status", nullable = false)
-    private String status;
+    @Column(name = "po_status", nullable = false)
+    private String poStatus;
 
     protected PlannedOvertimeDao() {}
 
-    public PlannedOvertimeDao(Long poId, Long employeeId, Long workdayId, Long managerId, String activity,
-                              Integer plannedHours, LocalDate fillingDate, LocalDate plannedDate, String status) {
+    public PlannedOvertimeDao(Long poId, Long employeeId, Long workdayId, Long managerId, String poDescription,
+                              Integer plannedHours, LocalDate filingDate, LocalDate plannedDate, String poStatus) {
         this.poId = poId;
         this.employeeId = employeeId;
         this.workdayId = workdayId;
         this.managerId = managerId;
-        this.activity = activity;
+        this.poDescription = poDescription;
         this.plannedHours = plannedHours;
-        this.fillingDate = fillingDate;
+        this.filingDate = filingDate;
         this.plannedDate = plannedDate;
-        this.status = status;
+        this.poStatus = poStatus;
     }
 
     public Long getPoId() { return poId; }
     public Long getEmployeeId() { return employeeId; }
     public Long getWorkdayId() { return workdayId; }
     public Long getManagerId() { return managerId; }
-    public String getActivity() { return activity; }
+    public String getPoDescription() { return poDescription; }
     public Integer getPlannedHours() { return plannedHours; }
-    public LocalDate getFillingDate() { return fillingDate; }
+    public LocalDate getFilingDate() { return filingDate; }
     public LocalDate getPlannedDate() { return plannedDate; }
-    public String getStatus() { return status; }
+    public String getPoStatus() { return poStatus; }
 }

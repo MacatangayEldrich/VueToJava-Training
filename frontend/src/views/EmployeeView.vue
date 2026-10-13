@@ -88,7 +88,6 @@ function submitActual(entry: Omit<OvertimeEntry, 'id' | 'ctoHours' | 'expiration
         <h1 id="employee-title" class="page-title">Make time<br /><em>count.</em></h1>
         <p class="view-lede">Plan overtime, log what you worked, and keep your CTO balance in view.</p>
       </div>
-      <div class="avatar" aria-label="Alex Morgan">AM</div>
     </div>
 
     <div class="overtime-forms">
