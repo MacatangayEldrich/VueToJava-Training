@@ -1,14 +1,6 @@
 <script setup lang="ts">
 import EarnedOvertimeCard from './EarnedOvertimeCard.vue'
-
-interface OvertimeEntry {
-	id: number
-	dateEarned: string
-	factorRate: number
-	overtimeHours: number
-	ctoHours: number
-	expirationDate: string
-}
+import type { OvertimeEntry } from '../models/overtime'
 
 defineProps<{
 	entries: OvertimeEntry[]

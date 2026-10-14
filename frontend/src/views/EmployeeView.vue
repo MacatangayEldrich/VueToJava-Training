@@ -1,35 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import ActualOvertimeForm from '../components/ActualOvertimeForm.vue'
 import OvertimeList from '../components/OvertimeList.vue'
 import PlannedOvertimeDetails from '../components/PlannedOvertimeDetails.vue'
 import PlannedOvertimeForm from '../components/PlannedOvertimeForm.vue'
-
-interface PlannedOvertime {
-  id: number
-  employeeId: number
-  workdayId: number
-  date: string
-  hours: number
-  activity: string
-  otDescription: string
-  plannedHours: number
-}
-
-interface PlannedOvertimeInput {
-  date: string
-  hours: number
-  activity: string
-}
-
-interface OvertimeEntry {
-  id: number
-  dateEarned: string
-  factorRate: number
-  overtimeHours: number
-  ctoHours: number
-  expirationDate: string
-}
+import type { OvertimeEntry, PlannedOvertime } from '../models/overtime'
 
 function localDateValue(date: Date) {
   const year = date.getFullYear()
@@ -39,7 +13,7 @@ function localDateValue(date: Date) {
 }
 
 const today = localDateValue(new Date())
-const nextId = ref(1)
+const demoEmployeeId = 4
 const plannedOvertime = ref<PlannedOvertime[]>([])
 const overtimeEntries = ref<OvertimeEntry[]>([])
 
@@ -47,36 +21,8 @@ const availableBalance = computed(() => overtimeEntries.value
   .filter((entry) => entry.expirationDate >= today)
   .reduce((total, entry) => total + entry.ctoHours, 0))
 
-function expirationDate(dateValue: string) {
-  const [year, month, day] = dateValue.split('-').map(Number)
-  const expiry = new Date(year, month - 1, day)
-  expiry.setFullYear(expiry.getFullYear() + 1)
-  if (expiry.getMonth() !== month - 1) {
-    expiry.setDate(0)
-  }
-  return localDateValue(expiry)
-}
-
-function submitPlan(plan: PlannedOvertimeInput) {
-  const id = nextId.value++
-  plannedOvertime.value.unshift({
-    id,
-    ...plan,
-    employeeId: 0,
-    workdayId: id,
-    otDescription: plan.activity,
-    plannedHours: plan.hours,
-  })
-}
-
-function submitActual(entry: Omit<OvertimeEntry, 'id' | 'ctoHours' | 'expirationDate'>) {
-  const ctoHours = Math.round(entry.overtimeHours * entry.factorRate * 100) / 100
-  overtimeEntries.value.unshift({
-    id: nextId.value++,
-    ...entry,
-    ctoHours,
-    expirationDate: expirationDate(entry.dateEarned),
-  })
+function submitPlan(plan: PlannedOvertime) {
+  plannedOvertime.value.unshift(plan)
 }
 </script>
 
@@ -92,10 +38,12 @@ function submitActual(entry: Omit<OvertimeEntry, 'id' | 'ctoHours' | 'expiration
     </div>
 
     <div class="overtime-forms">
-      <PlannedOvertimeForm :today="today" @submit="submitPlan" />
-      <ActualOvertimeForm :today="today" @submit="submitActual" />
+      <PlannedOvertimeForm :today="today" :employee-id="demoEmployeeId" @submit="submitPlan" />
+
+      <!-- <ActualOvertimeForm :today="today" @submit="submitActual" /> -->
     </div>
 
+    
     <PlannedOvertimeDetails :plans="plannedOvertime" />
     <OvertimeList :entries="overtimeEntries" :balance="availableBalance" />
   </section>
