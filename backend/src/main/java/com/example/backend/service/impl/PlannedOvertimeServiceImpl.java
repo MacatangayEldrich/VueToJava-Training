@@ -33,4 +33,19 @@ public class PlannedOvertimeServiceImpl extends AbstractCrudService<PlannedOvert
                 entity.getFillingDate(), entity.getPlannedDate(), entity.getStatus());
     }
 
+    public PlannedOvertimeDto approve(Long id) {
+        PlannedOvertimeDao entity = repository.findById(id).orElseThrow();
+
+        entity.setStatus("APPROVED");
+
+        return toDto(repository.save(entity));
+    }
+
+    public PlannedOvertimeDto reject(Long id) {
+        PlannedOvertimeDao entity = repository.findById(id).orElseThrow();
+
+        entity.setStatus("REJECTED");
+
+        return toDto(repository.save(entity));
+    }
 }

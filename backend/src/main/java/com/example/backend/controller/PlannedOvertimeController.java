@@ -49,6 +49,16 @@ public class PlannedOvertimeController {
         return service.update(id, dto);
     }
 
+    @PutMapping("/{id}/approve")
+    public PlannedOvertimeDto approve(@PathVariable Long id) {
+        return service.approve(id);
+    }
+
+    @PutMapping("/{id}/reject")
+    public PlannedOvertimeDto reject(@PathVariable Long id) {
+        return service.reject(id);
+    }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {

@@ -6,4 +6,8 @@ import com.example.backend.dto.PlannedOvertimeDto;
 
 public interface PlannedOvertimeService extends CrudService<PlannedOvertimeDto> {
     public List<PlannedOvertimeDto> findByEmployeeId(Long employeeId);
+
+    PlannedOvertimeDto approve(Long id);
+
+    PlannedOvertimeDto reject(Long id);
 }

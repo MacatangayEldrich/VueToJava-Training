@@ -15,7 +15,7 @@ const emit = defineEmits<{ close: []}>()
             <button class="close-button" @click="emit('close')">
                 X
             </button>
-            <OvertimeRequestDetails :request="props.request"/>
+            <OvertimeRequestDetails :request="props.request" @close="emit('close')"/>
 
             <!-- TODO: Actual Overtime Details -->
 
