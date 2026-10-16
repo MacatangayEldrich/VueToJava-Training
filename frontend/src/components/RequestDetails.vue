@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import OvertimeRequestDetails from './OvertimeRequestDetails.vue'
 
-defineProps<{ 
+const props = defineProps<{ 
     show: boolean,
     request: any
 }>()
@@ -15,7 +15,7 @@ const emit = defineEmits<{ close: []}>()
             <button class="close-button" @click="emit('close')">
                 X
             </button>
-            <OvertimeRequestDetails :request="request"/>
+            <OvertimeRequestDetails :request="props.request"/>
 
             <!-- TODO: Actual Overtime Details -->
 
