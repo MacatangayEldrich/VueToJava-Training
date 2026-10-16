@@ -1,12 +1,4 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import { useApprovalListStore } from '../stores/approvalListStore'
-
-const store = useApprovalListStore()
-
-onMounted(async () => {
-    await store.loadApprovalList()  
-})
 </script>
 
 <template>
@@ -27,17 +19,33 @@ onMounted(async () => {
 					</tr>
 				</thead>
 				<tbody>
-					<tr v-for="request in store.requests" :key=request.requestId>
-						<td>{{ request.requestId }}</td>
-						<td>{{ request.requestType }}</td>
-						<td>{{ request.employeeName }}</td>
-						<td>{{ request.fillingDate }}</td>
-						<td>{{ request.status }}</td>
-						<td>View</td>
+					<tr>
+						<td>OT000123</td>
+						<td>Overtime Request</td>
+						<td>Eldrich Macatangay</td>
+						<td>14-Oct-26</td>
+						<td>Pending</td>
+                        <td>View</td>
+					</tr>
+                    <tr>
+						<td>AO000456</td>
+						<td>Actual Overtime</td>
+						<td>Eileen Repollo</td>
+						<td>13-Oct-26</td>
+						<td>Pending</td>
+                        <td>View</td>
+					</tr>
+                    <tr>
+						<td>CTO000789</td>
+						<td>CTO Request</td>
+						<td>Shane Magnaye</td>
+						<td>15-Oct-26</td>
+						<td>Pending</td>
+                        <td>View</td>
 					</tr>
 				</tbody>
 				<tbody>
-					<tr><td class="table-empty" colspan="5">Showing 1-{{ store.requests.length}} of {{ store.requests.length}} records</td></tr>
+					<tr><td class="table-empty" colspan="5">Showing 1-3 of 3 records</td></tr>
 				</tbody>
 			</table>
 		</div>
