@@ -1,53 +1,52 @@
 <script setup lang="ts">
-import OvertimeRequestDetails from './OvertimeRequestDetails.vue'
-
-defineProps<{
+const props = defineProps<{ 
+    show: boolean,
     request: any
 }>()
 
 </script>
 <template>
-    <form class="content-section overtime-form plan-form" @submit.prevent="submitPlan">
+    <form class="content-section overtime-form plan-form">
         <div class="section-heading">
             <div><h2>Request Details</h2></div>
         </div>
         <label>
             Request Type
-            <div class="field-value">{{request?.requestId}}</div>
+            <div class="field-value">{{ props.request?.poId }}</div>
         </label>
         <label>
             Request Date
-            <div class="field-value">2025-01-05</div>
+            <div class="field-value">{{ props.request?.fillingDate }}</div>
         </label>
         <label>
             Employee Name
-            <div class="field-value">Ava Martinez</div>
+            <div class="field-value">{{ props.request?.employeeName }}</div>
         </label>
         <label>
             Department
-            <div class="field-value">QA/DEV/APP SUPPORT</div>
+            <div class="field-value">{{ props.request?.department }}</div>
         </label>
         <div class="form-row">
             <label>
                 Planned Date
-                <div class="field-value">2025-01-25</div>
+                <div class="field-value">{{ props.request?.plannedDate }}</div>
             </label>
             <label>
                 Planned hours
-                <div class="field-value">8</div>
+                <div class="field-value">{{ props.request?.plannedHours }}</div>
             </label>
         </div>
         <label>
             Workday Type
-            <div class="field-value">Ordinary Day</div>
+            <div class="field-value">{{ props.request?.workdayName }}</div>
         </label>
         <label>
             Work / reason
-            <div class="field-value">Development</div>
+            <div class="field-value">{{ props.request?.otDescription }}</div>
         </label>
         <div class="form-row">
-            <button class="submit-button coral-submit" type="submit">Reject</button>
-            <button class="submit-button" type="submit">Approve</button>
+            <button class="submit-button coral-submit">Reject</button>
+            <button class="submit-button">Approve</button>
         </div>
     </form>
 </template>
