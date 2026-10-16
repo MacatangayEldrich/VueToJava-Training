@@ -61,4 +61,8 @@ public class PlannedOvertimeDao {
     public LocalDate getFillingDate() { return fillingDate; }
     public LocalDate getPlannedDate() { return plannedDate; }
     public String getPoStatus() { return poStatus; }
+
+    public void setPoStatus(String poStatus) {
+        this.poStatus = poStatus;
+    }
 }

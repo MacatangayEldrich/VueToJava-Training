@@ -1,9 +1,26 @@
 <script setup lang="ts">
+import { useOvertimeRequestStore } from '../stores/overtimeRequestStore'
+
+const overtimeStore = useOvertimeRequestStore()
+
 const props = defineProps<{ 
     show: boolean,
     request: any
 }>()
 
+const approveRequest = async () => {
+    await overtimeStore.approveRequest(props.request.poId)
+
+    emit('close')
+}
+
+const rejectRequest = async () => {
+    await overtimeStore.rejectRequest(props.request.poId)
+
+    emit('close')
+}
+
+const emit = defineEmits<{ close: []}>()
 </script>
 <template>
     <form class="content-section overtime-form plan-form">
@@ -45,8 +62,8 @@ const props = defineProps<{
             <div class="field-value">{{ props.request?.otDescription }}</div>
         </label>
         <div class="form-row">
-            <button class="submit-button coral-submit">Reject</button>
-            <button class="submit-button">Approve</button>
+            <button class="submit-button coral-submit" type="button" @click="rejectRequest">Reject</button>
+            <button class="submit-button" type="button" @click="approveRequest">Approve</button>
         </div>
     </form>
 </template>

@@ -30,11 +30,55 @@ export const useOvertimeRequestStore = defineStore(
 
         }
 
+        const approveRequest = async(
+            requestId: number
+        ) => {
+            try {
+                const response = await fetch (`/v1/planned-overtimes/${requestId}/approve`,
+                    {
+                        method: 'PUT'
+                    }
+                )
+
+                if(!response.ok) {
+                    throw new Error(`Failed to approve (${response.status})`)
+                }
+
+                request.value = await response.json()
+            } catch (e) {
+                error.value = e instanceof Error ? e.message : 'Unknown error'
+            }
+
+        }
+
+        const rejectRequest = async(
+            requestId: number
+        ) => {
+            try {
+                const response = await fetch (`/v1/planned-overtimes/${requestId}/reject`,
+                    {
+                        method: 'PUT'
+                    }
+                )
+
+                if(!response.ok) {
+                    throw new Error(`Failed to reject (${response.status})`)
+                }
+
+                request.value = await response.json()
+            } catch (e) {
+                error.value = e instanceof Error ? e.message : 'Unknown error'
+            }
+
+        }
+
         return {
             request,
             loading,
             error,
-            loadOvertimeDetails
+            loadOvertimeDetails,
+            approveRequest,
+            rejectRequest
         }
     }
 )

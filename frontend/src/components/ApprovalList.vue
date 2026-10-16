@@ -43,7 +43,7 @@ const requestDetails = computed(() => ({
 			<div><h2 id="ledger-title">Approval Queue</h2></div>
 		</div>
 		<div class="table-scroll approval-table">
-			<RequestDetails :show="showPopup" :request="requestDetails" @close="showPopup = false" />
+			<RequestDetails :show="showPopup" :request="requestDetails" @close="showPopup = false; approvalStore.loadApprovalList();" />
 			<table class="overtime-table">
 				<thead>
 					<tr>
