@@ -26,4 +26,4 @@ replay_pid*
 # Maven build output
 backend/target/
 
-<link rel="icon" type="image/x-icon" href="imagea/favicon.ico>
+package-lock.json
