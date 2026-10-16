@@ -77,13 +77,17 @@ CREATE TABLE actual_overtime (
 
 CREATE TABLE use_overtime (
     uo_id BIGINT NOT NULL PRIMARY KEY,
+    employee_id BIGINT,
     manager_id BIGINT,
-    uo_status VARCHAR(20) NOT NULL,
+    status VARCHAR(20) NOT NULL,
     use_hours INT NOT NULL,
     filling_date DATE NOT NULL,
     use_date DATE NOT NULL,
     remarks  VARCHAR(255) NOT NULL,
     CONSTRAINT fk_uo_manager
         FOREIGN KEY (manager_id)
-        REFERENCES manager(manager_id)
+        REFERENCES manager(manager_id),
+    CONSTRAINT fk_uo_employee
+        FOREIGN KEY (employee_id)
+        REFERENCES employee(employee_id)
 );

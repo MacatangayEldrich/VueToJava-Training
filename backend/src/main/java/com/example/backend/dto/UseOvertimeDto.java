@@ -4,8 +4,9 @@ import java.time.LocalDate;
 
 public record UseOvertimeDto(
         Long uoId,
+        Long employeeId,
         Long managerId,
-        String uoStatus,
+        String status,
         Integer useHours,
         LocalDate fillingDate,
         LocalDate useDate,

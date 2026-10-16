@@ -13,11 +13,14 @@ public class UseOvertimeDao {
     @Column(name = "uo_id")
     private Long uoId;
 
+    @Column(name = "employee_id")
+    private Long employeeId;
+
     @Column(name = "manager_id")
     private Long managerId;
 
-    @Column(name = "uo_status", nullable = false)
-    private String uoStatus;
+    @Column(name = "status", nullable = false)
+    private String status;
 
     @Column(name = "use_hours", nullable = false)
     private Integer useHours;
@@ -33,11 +36,12 @@ public class UseOvertimeDao {
 
     protected UseOvertimeDao() {}
 
-    public UseOvertimeDao(Long uoId, Long managerId, String uoStatus, Integer useHours,
+    public UseOvertimeDao(Long uoId, Long employeeId, Long managerId, String status, Integer useHours,
                           LocalDate fillingDate, LocalDate useDate, String remarks) {
         this.uoId = uoId;
+        this.employeeId = employeeId;
         this.managerId = managerId;
-        this.uoStatus = uoStatus;
+        this.status = status;
         this.useHours = useHours;
         this.fillingDate = fillingDate;
         this.useDate = useDate;
@@ -45,8 +49,9 @@ public class UseOvertimeDao {
     }
 
     public Long getUoId() { return uoId; }
+    public Long getEmployeeId() { return employeeId; }
     public Long getManagerId() { return managerId; }
-    public String getUoStatus() { return uoStatus; }
+    public String getStatus() { return status; }
     public Integer getUseHours() { return useHours; }
     public LocalDate getFillingDate() { return fillingDate; }
     public LocalDate getUseDate() { return useDate; }
