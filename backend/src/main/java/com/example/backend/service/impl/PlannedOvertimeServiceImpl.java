@@ -8,8 +8,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PlannedOvertimeServiceImpl extends AbstractCrudService<PlannedOvertimeDao, PlannedOvertimeDto> implements PlannedOvertimeService {
+    private final PlannedOvertimeRepository repository;
+
     public PlannedOvertimeServiceImpl(PlannedOvertimeRepository repository) {
         super(repository);
+        this.repository = repository;
     }
 
     protected Long idOf(PlannedOvertimeDto dto) { return dto.poId(); }
@@ -21,5 +24,21 @@ public class PlannedOvertimeServiceImpl extends AbstractCrudService<PlannedOvert
         return new PlannedOvertimeDto(entity.getPoId(), entity.getEmployeeId(), entity.getWorkdayId(),
                 entity.getManagerId(), entity.getOtDescription(), entity.getPlannedHours(),
                 entity.getFillingDate(), entity.getPlannedDate(), entity.getPoStatus());
+    }
+
+    public PlannedOvertimeDto approve(Long id) {
+        PlannedOvertimeDao entity = repository.findById(id).orElseThrow();
+
+        entity.setPoStatus("APPROVED");
+
+        return toDto(repository.save(entity));
+    }
+
+    public PlannedOvertimeDto reject(Long id) {
+        PlannedOvertimeDao entity = repository.findById(id).orElseThrow();
+
+        entity.setPoStatus("REJECTED");
+
+        return toDto(repository.save(entity));
     }
 }
