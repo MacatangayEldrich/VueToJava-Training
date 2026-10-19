@@ -2,6 +2,8 @@ package com.example.backend.dao;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
@@ -9,6 +11,7 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "workday_type")
 public class WorkdayTypeDao {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "workday_id")
     private Long workdayId;

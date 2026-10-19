@@ -2,12 +2,15 @@ package com.example.backend.dao;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "employee")
 public class EmployeeDao {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "employee_id")
     private Long employeeId;

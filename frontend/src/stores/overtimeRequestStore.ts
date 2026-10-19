@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import type { PlannedOvertime } from '../models/overtime'
 
 export const useOvertimeRequestStore = defineStore(
     'overtimeRequest',
     () => {
-        const request = ref(null)
+        const request = ref<PlannedOvertime | null>(null)
         const loading = ref(false)
         const error = ref<string | null>(null)
 

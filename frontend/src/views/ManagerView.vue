@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import ApprovalList from '../components/ApprovalList.vue'
-import RequestDetails from '../components/RequestDetails.vue'
 
 const formattedDate = new Intl.DateTimeFormat('en-US', {
   weekday: 'long',

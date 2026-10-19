@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
-import EmployeeView from './components/EmployeeView.vue'
-import ManagerView from './components/ManagerView.vue'
+import { useMasterDataStore } from './stores/masterDataStore'
+import EmployeeView from './views/EmployeeView.vue'
+import ManagerView from './views/ManagerView.vue'
 
 const backendHealthy = ref(true)
 const error = ref<string | null>(null)
 const loading = ref(false)
 const requestDuration = ref<number | null>(null)
 const activeRoute = ref<'employee' | 'manager'>('employee')
+const employeeId = 4 // demo employee id only change it as needed.
 
 function syncRoute() {
   activeRoute.value = window.location.hash === '#/manager' ? 'manager' : 'employee'
@@ -22,9 +24,15 @@ async function checkBackend() {
     const health = await result.json()
     backendHealthy.value = result.ok && health.status === 'UP'
     requestDuration.value = Math.round(performance.now() - startedAt)
+    if (backendHealthy.value) {
+      const masterDataStore = useMasterDataStore()
+      await masterDataStore.loadAll()
+    } else {
+      error.value = 'Backend is not healthy.'
+    }
   } catch {
     backendHealthy.value = false
-    error.value= 'Unable to reach the backend.'
+    error.value = 'Unable to reach the backend.'
     requestDuration.value = null
   } finally {
     loading.value = false
@@ -44,12 +52,12 @@ onUnmounted(() => window.removeEventListener('hashchange', syncRoute))
   <main class="shell">
     <header class="topbar">
       <a class="brand" href="#/employee" aria-label="PeopleDesk home">
-        <span class="brand-mark">VJ</span>
         <span>PeopleDesk</span>
       </a>
       <div class="header-tools">
         <span class="environment"><span class="status-dot" :class="{ offline: error }"></span>{{ backendHealthy ? 'System online' : error ? 'System offline' : 'Connecting' }}</span>
-        <button class="refresh-button" type="button" :disabled="loading" aria-label="Refresh system status" title="Refresh system status" @click="checkBackend">↻</button>
+        <button class="refresh-button" type="button" :disabled="loading" aria-label="Refresh system status"
+          title="Refresh system status" @click="checkBackend">↻</button>
       </div>
     </header>
 
@@ -57,12 +65,14 @@ onUnmounted(() => window.removeEventListener('hashchange', syncRoute))
       <aside class="sidebar">
         <p class="eyebrow">Workspace</p>
         <nav class="route-nav" aria-label="Workspace routes">
-          <a href="#/employee" :class="{ active: activeRoute === 'employee' }" :aria-current="activeRoute === 'employee' ? 'page' : undefined">
+          <a href="#/employee" :class="{ active: activeRoute === 'employee' }"
+            :aria-current="activeRoute === 'employee' ? 'page' : undefined">
             <span class="nav-icon">E</span>
             <span>Employee</span>
             <span class="nav-arrow" aria-hidden="true">↗</span>
           </a>
-          <a href="#/manager" :class="{ active: activeRoute === 'manager' }" :aria-current="activeRoute === 'manager' ? 'page' : undefined">
+          <a href="#/manager" :class="{ active: activeRoute === 'manager' }"
+            :aria-current="activeRoute === 'manager' ? 'page' : undefined">
             <span class="nav-icon">M</span>
             <span>Manager</span>
             <span class="nav-arrow" aria-hidden="true">↗</span>
@@ -74,7 +84,7 @@ onUnmounted(() => window.removeEventListener('hashchange', syncRoute))
         </div>
       </aside>
 
-      <EmployeeView v-show="activeRoute === 'employee'" />
+      <EmployeeView v-show="activeRoute === 'employee'" :employee-id="employeeId" />
       <ManagerView v-show="activeRoute === 'manager'" />
     </div>
 

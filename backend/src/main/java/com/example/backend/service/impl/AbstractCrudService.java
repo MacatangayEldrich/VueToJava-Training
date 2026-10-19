@@ -28,13 +28,6 @@ public abstract class AbstractCrudService<E, D> {
     }
 
     public D create(D dto) {
-        Long id = idOf(dto);
-        if (id == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "An ID is required by the database schema");
-        }
-        if (repository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "An entity with this ID already exists");
-        }
         return toDto(repository.save(toEntity(dto)));
     }
 
