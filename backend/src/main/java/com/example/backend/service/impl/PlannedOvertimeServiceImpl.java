@@ -24,7 +24,7 @@ public class PlannedOvertimeServiceImpl extends AbstractCrudService<PlannedOvert
 
     protected Long idOf(PlannedOvertimeDto dto) { return dto.poId(); }
     protected PlannedOvertimeDao toEntity(PlannedOvertimeDto dto) {
-        return new PlannedOvertimeDao(dto.poId(), dto.employeeId(), dto.workdayId(), dto.managerId(),
+        return new PlannedOvertimeDao(dto.employeeId(), dto.workdayId(), dto.managerId(),
                 dto.activity(), dto.plannedHours(), dto.fillingDate(), dto.plannedDate(), dto.status());
     }
     protected PlannedOvertimeDto toDto(PlannedOvertimeDao entity) {

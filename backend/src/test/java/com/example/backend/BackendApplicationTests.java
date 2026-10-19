@@ -38,6 +38,22 @@ class BackendApplicationTests {
         }
     }
 
+        @Test
+        void plannedOvertimeCreateGeneratesIdWhenOmitted() throws Exception {
+                String plannedOvertime = """
+                                {"employeeId":4,"workdayId":1,"managerId":1001,"activity":"Release support",
+                                 "plannedHours":2,"fillingDate":"2026-10-19","plannedDate":"2026-10-20",
+                                 "status":"For Approval"}
+                                """;
+
+                mockMvc.perform(post("/v1/planned-overtimes")
+                                                .contentType("application/json")
+                                                .content(plannedOvertime))
+                                .andExpect(status().isCreated())
+                                .andExpect(jsonPath("$.poId").isNumber())
+                                .andExpect(jsonPath("$.employeeId").value(4));
+        }
+
     @Test
     void employeeCrudUsesDtoAndRepositoryLayers() throws Exception {
         long id = Long.MAX_VALUE;

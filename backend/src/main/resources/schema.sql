@@ -32,7 +32,7 @@ CREATE TABLE workday_type (
 
     
 CREATE TABLE planned_overtime (
-    po_id BIGINT PRIMARY KEY,
+    po_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     employee_id BIGINT NOT NULL,
     workday_id BIGINT NOT NULL,
     manager_id BIGINT,
