@@ -2,6 +2,8 @@ package com.example.backend.dao;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
@@ -9,6 +11,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "planned_overtime")
 public class PlannedOvertimeDao {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "po_id")
     private Long poId;
@@ -39,9 +42,8 @@ public class PlannedOvertimeDao {
 
     protected PlannedOvertimeDao() {}
 
-    public PlannedOvertimeDao(Long poId, Long employeeId, Long workdayId, Long managerId, String activity,
+    public PlannedOvertimeDao(Long employeeId, Long workdayId, Long managerId, String activity,
                               Integer plannedHours, LocalDate fillingDate, LocalDate plannedDate, String status) {
-        this.poId = poId;
         this.employeeId = employeeId;
         this.workdayId = workdayId;
         this.managerId = managerId;
