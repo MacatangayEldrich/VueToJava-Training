@@ -14,13 +14,13 @@ public class ActualOvertimeServiceImpl extends AbstractCrudService<ActualOvertim
 
     protected Long idOf(ActualOvertimeDto dto) { return dto.aoId(); }
     protected ActualOvertimeDao toEntity(ActualOvertimeDto dto) {
-        return new ActualOvertimeDao(dto.aoId(), dto.poId(), dto.managerId(), dto.aoStatus(), dto.aoDescription(),
+        return new ActualOvertimeDao(dto.aoId(), dto.poId(), dto.managerId(), dto.status(), dto.activity(),
                 dto.renderedHours(), dto.earnedHours(), dto.fillingDate(), dto.actualDate(),
                 dto.expirationDate(), dto.remarks());
     }
     protected ActualOvertimeDto toDto(ActualOvertimeDao entity) {
-        return new ActualOvertimeDto(entity.getAoId(), entity.getPoId(), entity.getManagerId(), entity.getAoStatus(),
-                entity.getAoDescription(), entity.getRenderedHours(), entity.getEarnedHours(), entity.getFillingDate(),
+        return new ActualOvertimeDto(entity.getAoId(), entity.getPoId(), entity.getManagerId(), entity.getStatus(),
+                entity.getActivity(), entity.getRenderedHours(), entity.getEarnedHours(), entity.getFillingDate(),
                 entity.getActualDate(), entity.getExpirationDate(), entity.getRemarks());
     }
 }

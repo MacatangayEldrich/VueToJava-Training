@@ -14,11 +14,11 @@ public class UseOvertimeServiceImpl extends AbstractCrudService<UseOvertimeDao, 
 
     protected Long idOf(UseOvertimeDto dto) { return dto.uoId(); }
     protected UseOvertimeDao toEntity(UseOvertimeDto dto) {
-        return new UseOvertimeDao(dto.uoId(), dto.managerId(), dto.uoStatus(), dto.useHours(),
+        return new UseOvertimeDao(dto.uoId(), dto.employeeId(), dto.managerId(), dto.status(), dto.useHours(),
                 dto.fillingDate(), dto.useDate(), dto.remarks());
     }
     protected UseOvertimeDto toDto(UseOvertimeDao entity) {
-        return new UseOvertimeDto(entity.getUoId(), entity.getManagerId(), entity.getUoStatus(),
+        return new UseOvertimeDto(entity.getUoId(), entity.getEmployeeId(), entity.getManagerId(), entity.getStatus(),
                 entity.getUseHours(), entity.getFillingDate(), entity.getUseDate(), entity.getRemarks());
     }
 }

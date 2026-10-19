@@ -7,8 +7,9 @@ public record PlannedOvertimeDto(
         Long employeeId,
         Long workdayId,
         Long managerId,
-        String otDescription,
+        String activity,
         Integer plannedHours,
         LocalDate fillingDate,
         LocalDate plannedDate,
-        String poStatus) {}
+        String status) {}
+        

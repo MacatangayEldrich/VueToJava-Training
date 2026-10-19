@@ -1,5 +1,5 @@
 CREATE TABLE employee (
-    employee_id BIGINT PRIMARY KEY,
+    employee_id AUTO_INCREMENT PRIMARY KEY,
     employee_name VARCHAR(255) NOT NULL,
     department VARCHAR(100),
     position VARCHAR(100),
@@ -8,7 +8,7 @@ CREATE TABLE employee (
 );
 
 CREATE TABLE manager (
-    manager_id BIGINT PRIMARY KEY,
+    manager_id AUTO_INCREMENT PRIMARY KEY,
     manager_name VARCHAR(255) NOT NULL
 );
 
@@ -32,15 +32,15 @@ CREATE TABLE workday_type (
 
     
 CREATE TABLE planned_overtime (
-    po_id BIGINT PRIMARY KEY,
+    po_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     employee_id BIGINT NOT NULL,
     workday_id BIGINT NOT NULL,
     manager_id BIGINT,
-    ot_description VARCHAR(255),
+    activity VARCHAR(255),
     planned_hours INT NOT NULL,
     filling_date DATE NOT NULL,
     planned_date DATE NOT NULL,
-    po_status VARCHAR(20) NOT NULL,
+    status VARCHAR(20) NOT NULL,
     
     CONSTRAINT fk_po_employee
         FOREIGN KEY (employee_id)
@@ -54,11 +54,11 @@ CREATE TABLE planned_overtime (
 );
 
 CREATE TABLE actual_overtime (
-    ao_id BIGINT NOT NULL PRIMARY KEY,
+    ao_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     po_id BIGINT NOT NULL,
     manager_id BIGINT,
-    ao_status VARCHAR(20) NOT NULL,
-    ao_description VARCHAR(255),
+    status VARCHAR(20) NOT NULL,
+    activity VARCHAR(255),
     rendered_hours INT NOT NULL,
     earned_hours DECIMAL(10,2) NOT NULL,
     filling_date DATE NOT NULL,
@@ -76,14 +76,18 @@ CREATE TABLE actual_overtime (
 
 
 CREATE TABLE use_overtime (
-    uo_id BIGINT NOT NULL PRIMARY KEY,
+    uo_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    employee_id BIGINT,
     manager_id BIGINT,
-    uo_status VARCHAR(20) NOT NULL,
+    status VARCHAR(20) NOT NULL,
     use_hours INT NOT NULL,
     filling_date DATE NOT NULL,
     use_date DATE NOT NULL,
     remarks  VARCHAR(255) NOT NULL,
     CONSTRAINT fk_uo_manager
         FOREIGN KEY (manager_id)
-        REFERENCES manager(manager_id)
+        REFERENCES manager(manager_id),
+    CONSTRAINT fk_uo_employee
+        FOREIGN KEY (employee_id)
+        REFERENCES employee(employee_id)
 );

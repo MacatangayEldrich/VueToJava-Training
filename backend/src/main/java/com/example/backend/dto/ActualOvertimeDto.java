@@ -7,11 +7,12 @@ public record ActualOvertimeDto(
         Long aoId,
         Long poId,
         Long managerId,
-        String aoStatus,
-        String aoDescription,
+        String status,
+        String activity,
         Integer renderedHours,
         BigDecimal earnedHours,
         LocalDate fillingDate,
         LocalDate actualDate,
         LocalDate expirationDate,
         String remarks) {}
+        

@@ -1,6 +1,7 @@
-package com.example.backend.repository;
+package com.example.backend.repository.impl;
 
 import com.example.backend.dto.ApprovalListDto;
+import com.example.backend.repository.ApprovalListRepository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -22,7 +23,7 @@ public class ApprovalListRepositoryImpl implements ApprovalListRepository {
                 'Overtime Request' AS TYPE, 
                 e.EMPLOYEE_NAME, 
                 p.FILLING_DATE, 
-                p.PO_STATUS AS STATUS
+                p.STATUS
             FROM PLANNED_OVERTIME p
             INNER JOIN EMPLOYEE e
                 ON p.EMPLOYEE_ID = e.EMPLOYEE_ID
@@ -34,7 +35,7 @@ public class ApprovalListRepositoryImpl implements ApprovalListRepository {
                 'Actual Overtime' AS TYPE, 
                 e.EMPLOYEE_NAME, 
                 a.FILLING_DATE,  
-                a.AO_STATUS AS STATUS 
+                a.STATUS
             FROM ACTUAL_OVERTIME a
             INNER JOIN PLANNED_OVERTIME p
                 ON p.PO_ID = a.PO_ID
