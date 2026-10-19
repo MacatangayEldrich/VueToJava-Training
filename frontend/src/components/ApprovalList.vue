@@ -1,28 +1,36 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
 import { useApprovalListStore } from '../stores/approvalListStore'
+import type { ApprovalListItem } from '../stores/approvalListStore'
 import { useOvertimeRequestStore } from '../stores/overtimeRequestStore'
-import { useEmployeeStore } from '../stores/employeeStore'
-import { useWorkdayTypeStore } from '../stores/workdayTypeStore'
+import { useMasterDataStore } from '../stores/masterDataStore'
 import RequestDetails from './RequestDetails.vue'
 
 const overtimeStore = useOvertimeRequestStore()
 const approvalStore = useApprovalListStore()
-const employeeStore = useEmployeeStore()
-const workdayTypeStore = useWorkdayTypeStore()
+const masterDataStore = useMasterDataStore()
 
 const showPopup = ref(false)
+const detailError = ref<string | null>(null)
 
 const viewIcon = '\u{1F50D}'
 
-const openRequest = async (request: any) => {
-    await overtimeStore.loadOvertimeDetails(request.requestId)
+const openRequest = async (request: ApprovalListItem) => {
+    detailError.value = null
+    try {
+        await overtimeStore.loadOvertimeDetails(request.requestId)
+        if (overtimeStore.error) throw new Error(overtimeStore.error)
+        const details = overtimeStore.request
+        if (!details) throw new Error('Unable to load request details.')
 
-	await employeeStore.loadEmployee(overtimeStore.request.employeeId)
-
-	await workdayTypeStore.loadWorkdayType(overtimeStore.request.workdayId)
-
-    showPopup.value = true
+        await Promise.all([
+            masterDataStore.loadEmployee(details.employeeId),
+            masterDataStore.loadWorkdayType(details.workdayId)
+        ])
+        showPopup.value = true
+    } catch (cause) {
+        detailError.value = cause instanceof Error ? cause.message : 'Unable to load request details.'
+    }
 }
 
 onMounted(async () => {
@@ -30,10 +38,16 @@ onMounted(async () => {
 })
 
 const requestDetails = computed(() => ({
-	...overtimeStore.request,
-	employeeName: employeeStore.request?.employeeName,
-	department: employeeStore.request?.department,
-	workdayName: workdayTypeStore.request?.workdayName
+	...(overtimeStore.request ?? {}),
+	employeeName: overtimeStore.request
+		? masterDataStore.employees[overtimeStore.request.employeeId]?.employeeName
+		: undefined,
+	department: overtimeStore.request
+		? masterDataStore.employees[overtimeStore.request.employeeId]?.department
+		: undefined,
+	workdayName: masterDataStore.workdayTypes.find(
+		(type) => type.workdayId === overtimeStore.request?.workdayId
+	)?.workdayName
 }))
 </script>
 
@@ -44,6 +58,7 @@ const requestDetails = computed(() => ({
 		</div>
 		<div class="table-scroll approval-table">
 			<RequestDetails :show="showPopup" :request="requestDetails" @close="showPopup = false; approvalStore.loadApprovalList();" />
+			<p v-if="detailError" class="form-hint" role="alert">{{ detailError }}</p>
 			<table class="overtime-table">
 				<thead>
 					<tr>

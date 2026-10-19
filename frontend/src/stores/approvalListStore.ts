@@ -1,10 +1,18 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
+export interface ApprovalListItem {
+    requestId: number
+    requestType: string
+    employeeName: string
+    fillingDate: string
+    status: string
+}
+
 export const useApprovalListStore = defineStore(
     'approvalList',
     () => {
-        const requests = ref([])
+        const requests = ref<ApprovalListItem[]>([])
         const loading = ref(false)
         const error = ref<string | null>(null)
 

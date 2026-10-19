@@ -1,5 +1,5 @@
 CREATE TABLE employee (
-    employee_id AUTO_INCREMENT PRIMARY KEY,
+    employee_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     employee_name VARCHAR(255) NOT NULL,
     department VARCHAR(100),
     position VARCHAR(100),
@@ -8,7 +8,7 @@ CREATE TABLE employee (
 );
 
 CREATE TABLE manager (
-    manager_id AUTO_INCREMENT PRIMARY KEY,
+    manager_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     manager_name VARCHAR(255) NOT NULL
 );
 
