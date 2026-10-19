@@ -9,6 +9,7 @@ const error = ref<string | null>(null)
 const loading = ref(false)
 const requestDuration = ref<number | null>(null)
 const activeRoute = ref<'employee' | 'manager'>('employee')
+const employeeId = 4 // demo employee id only change it as needed.
 
 function syncRoute() {
   activeRoute.value = window.location.hash === '#/manager' ? 'manager' : 'employee'
@@ -83,7 +84,7 @@ onUnmounted(() => window.removeEventListener('hashchange', syncRoute))
         </div>
       </aside>
 
-      <EmployeeView v-show="activeRoute === 'employee'" />
+      <EmployeeView v-show="activeRoute === 'employee'" :employee-id="employeeId" />
       <ManagerView v-show="activeRoute === 'manager'" />
     </div>
 
