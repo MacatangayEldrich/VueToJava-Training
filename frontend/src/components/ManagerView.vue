@@ -16,6 +16,5 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
     <p class="eyebrow">{{ formattedDate }}<span class="heading-divider">/</span> Manager space</p>
 
     <ApprovalList />
-    <RequestDetails />
   </section>
 </template>
