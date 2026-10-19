@@ -19,7 +19,6 @@ export interface PlannedOvertime {
 }
 
 export interface PlannedOvertimeCreateRequest {
-    poId: number
     employeeId: number
     workdayId: number
     activity: string

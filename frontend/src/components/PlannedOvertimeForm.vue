@@ -26,14 +26,13 @@ async function submitForm() {
 	if (!selectedType || submitting.value) return
 
 	const request: PlannedOvertimeCreateRequest = {
-		poId: Date.now(),
 		employeeId: props.employeeId,
 		workdayId: selectedType.workdayId,
 		activity: form.value.activity,
 		plannedHours: form.value.plannedHours,
 		fillingDate: props.today,
 		plannedDate: form.value.plannedDate,
-		status: 'For Approval',
+		status: 'FOR APPROVAL',
 	}
 
 	submitting.value = true
