@@ -20,12 +20,18 @@ INSERT INTO employee (employee_id, employee_name, department, position, work_day
 (19, 'Alexander Lee', 'Operations', 'Facilities Specialist', 'Monday-Friday', '07:00-15:00'),
 (20, 'Scarlett Clark', 'Operations', 'Process Improvement Analyst', 'Monday-Friday', '07:00-15:00');
 
+ALTER TABLE employee 
+ALTER COLUMN employee_id RESTART WITH 21;
+
 INSERT INTO manager (manager_id, manager_name) VALUES
 (1, 'Grace Thompson'),
 (2, 'Daniel Rodriguez'),
 (3, 'Chloe Wilson'),
 (4, 'Michael Lee'),
 (5, 'Nora Williams');
+
+ALTER TABLE manager 
+ALTER COLUMN manager_id RESTART WITH 6;
 
 INSERT INTO reporting_lines (employee_id, manager_id) VALUES
 (1, 1),
@@ -83,6 +89,9 @@ INSERT INTO workday_type (workday_id, workday_name, factor_rate) VALUES
 (7, 'Regular Holiday', 2.00),
 (8, 'Regular Holiday (>8)', 2.60);
 
+ALTER TABLE workday_type 
+ALTER COLUMN workday_id RESTART WITH 9;
+
 INSERT INTO planned_overtime (po_id, employee_id, workday_id, manager_id, activity, planned_hours, filling_date, planned_date, status) VALUES
 (1, 4, 1, 1, 'Release preparation support', 2, '2026-04-05', '2026-04-10', 'APPROVED'),
 (2, 4, 2, 1, 'Regression test execution', 3, '2026-04-06', '2026-04-11', 'APPROVED'),
@@ -105,6 +114,9 @@ INSERT INTO planned_overtime (po_id, employee_id, workday_id, manager_id, activi
 (19, 19, 6, 5, 'Facilities maintenance coverage', 2, '2026-04-23', '2026-04-28', 'APPROVED'),
 (20, 20, 5, 5, 'Process audit preparation', 3, '2026-04-24', '2026-04-29', 'APPROVED');
 
+ALTER TABLE planned_overtime 
+ALTER COLUMN po_id RESTART WITH 21;
+
 INSERT INTO actual_overtime (ao_id, po_id, manager_id, status, activity, rendered_hours, earned_hours, filling_date, actual_date, expiration_date, remarks) VALUES
 (1, 1, 1, 'APPROVED', 'Completed release preparation', 2, 2.00, '2026-04-11', '2026-04-10', '2026-07-10', 'Verified by manager'),
 (2, 2, 1, 'APPROVED', 'Completed regression testing', 3, 4.50, '2026-04-12', '2026-04-11', '2026-07-11', 'Test results recorded'),
@@ -123,6 +135,9 @@ INSERT INTO actual_overtime (ao_id, po_id, manager_id, status, activity, rendere
 (15, 18, 5, 'APPROVED', 'Coordinated delayed shipments', 3, 5.25, '2026-04-28', '2026-04-27', '2026-07-27', 'Shipments rescheduled'),
 (16, 19, 5, 'APPROVED', 'Covered facilities maintenance', 2, 4.00, '2026-04-29', '2026-04-28', '2026-07-28', 'Maintenance requests closed'),
 (17, 20, 5, 'APPROVED', 'Prepared process audit', 3, 5.25, '2026-04-30', '2026-04-29', '2026-07-29', 'Audit documents prepared');
+
+ALTER TABLE actual_overtime 
+ALTER COLUMN ao_id RESTART WITH 18;
 
 INSERT INTO use_overtime (uo_id, employee_id, manager_id, status, use_hours, filling_date, use_date, remarks) VALUES
 (1,4, 1, 'APPROVED', 2, '2025-02-01', '2025-02-07', 'Personal appointment'),
@@ -145,3 +160,6 @@ INSERT INTO use_overtime (uo_id, employee_id, manager_id, status, use_hours, fil
 (18,18, 5, 'APPROVED', 3, '2025-02-18', '2025-02-24', 'Home maintenance'),
 (19,19, 5, 'APPROVED', 1, '2025-02-19', '2025-02-25', 'Personal errands'),
 (20,17, 5, 'APPROVED', 2, '2025-02-20', '2025-02-26', 'Family event');
+
+ALTER TABLE use_overtime 
+ALTER COLUMN uo_id RESTART WITH 21;

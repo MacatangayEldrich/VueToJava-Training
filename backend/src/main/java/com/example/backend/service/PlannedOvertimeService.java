@@ -1,8 +1,8 @@
 package com.example.backend.service;
 
-import java.util.List;
-
 import com.example.backend.dto.PlannedOvertimeDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface PlannedOvertimeService extends CrudService<PlannedOvertimeDto> {
 
@@ -10,5 +10,5 @@ public interface PlannedOvertimeService extends CrudService<PlannedOvertimeDto> 
 
     PlannedOvertimeDto reject(Long id);
     
-    public List<PlannedOvertimeDto> findByEmployeeId(Long employeeId);
+    Page<PlannedOvertimeDto> findByEmployeeId(Long employeeId, Pageable pageable);
 }

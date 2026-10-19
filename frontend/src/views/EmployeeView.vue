@@ -3,7 +3,7 @@ import { computed, ref, watch } from 'vue'
 import OvertimeList from '../components/OvertimeList.vue'
 import PlannedOvertimeDetails from '../components/PlannedOvertimeDetails.vue'
 import PlannedOvertimeForm from '../components/PlannedOvertimeForm.vue'
-import type { OvertimeEntry, PlannedOvertime } from '../models/overtime'
+import type { OvertimeEntry } from '../models/overtime'
 import { useMasterDataStore } from '../stores/masterDataStore'
 
 function localDateValue(date: Date) {
@@ -20,7 +20,7 @@ const employee = computed(() => masterDataStore.employees[props.employeeId])
 const employeeLoading = ref(false)
 const employeeError = ref<string | null>(null)
 const showEmployeeDetails = ref(false)
-const plannedOvertime = ref<PlannedOvertime[]>([])
+const plannedOvertimeRefreshKey = ref(0)
 const overtimeEntries = ref<OvertimeEntry[]>([])
 const employeeInitials = computed(() => employee.value?.employeeName
   .split(/\s+/)
@@ -46,8 +46,8 @@ const availableBalance = computed(() => overtimeEntries.value
   .filter((entry) => entry.expirationDate >= today)
   .reduce((total, entry) => total + entry.ctoHours, 0))
 
-function submitPlan(plan: PlannedOvertime) {
-  plannedOvertime.value.unshift(plan)
+function submitPlan() {
+  plannedOvertimeRefreshKey.value += 1
 }
 </script>
 
@@ -99,7 +99,10 @@ function submitPlan(plan: PlannedOvertime) {
     </div>
 
     
-    <PlannedOvertimeDetails :plans="plannedOvertime" />
+    <PlannedOvertimeDetails
+      :employee-id="props.employeeId"
+      :refresh-key="plannedOvertimeRefreshKey"
+    />
     <OvertimeList :entries="overtimeEntries" :balance="availableBalance" />
   </section>
 </template>
