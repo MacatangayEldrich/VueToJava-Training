@@ -3,10 +3,7 @@ import { useOvertimeRequestStore } from '../stores/overtimeRequestStore'
 
 const overtimeStore = useOvertimeRequestStore()
 
-const props = defineProps<{ 
-    show: boolean,
-    request: any
-}>()
+const props = defineProps<{ request: any }>()
 
 const approveRequest = async () => {
     await overtimeStore.approveRequest(props.request.poId)
