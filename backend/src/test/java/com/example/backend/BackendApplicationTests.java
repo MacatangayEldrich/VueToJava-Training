@@ -39,6 +39,19 @@ class BackendApplicationTests {
     }
 
     @Test
+    void plannedOvertimeForEmployeeReturnsPagedResults() throws Exception {
+        mockMvc.perform(get("/v1/planned-overtimes/employee/{id}", 1)
+                        .param("page", "0")
+                        .param("size", "2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content").isArray())
+                .andExpect(jsonPath("$.number").value(0))
+                .andExpect(jsonPath("$.size").value(2))
+                .andExpect(jsonPath("$.totalElements").exists())
+                .andExpect(jsonPath("$.totalPages").exists());
+    }
+
+    @Test
     void employeeCrudUsesDtoAndRepositoryLayers() throws Exception {
         long id = Long.MAX_VALUE;
         String employee = """

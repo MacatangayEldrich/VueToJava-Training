@@ -5,8 +5,8 @@ import com.example.backend.dto.PlannedOvertimeDto;
 import com.example.backend.repository.PlannedOvertimeRepository;
 import com.example.backend.service.PlannedOvertimeService;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,8 +18,8 @@ public class PlannedOvertimeServiceImpl extends AbstractCrudService<PlannedOvert
     }
 
     @Override
-    public List<PlannedOvertimeDto> findByEmployeeId(Long employeeId){
-        return this.repository.findByEmployeeId(employeeId).stream().map(this::toDto).toList();
+    public Page<PlannedOvertimeDto> findByEmployeeId(Long employeeId, Pageable pageable) {
+        return repository.findByEmployeeId(employeeId, pageable).map(this::toDto);
     }
 
     protected Long idOf(PlannedOvertimeDto dto) { return dto.poId(); }
