@@ -18,8 +18,8 @@ public class ApprovalListServiceImpl implements ApprovalListService {
     }
 
     @Override
-    public List<ApprovalListDto> findAll() {
-        return repository.findAll();
+    public List<ApprovalListDto> findAllByManagerId(Long managerId) {
+        return repository.findAllByManagerId(managerId);
     }
 
     @Override

@@ -49,4 +49,14 @@ public class ActualOvertimeController {
     public void delete(@PathVariable Long id) {
         service.delete(id);
     }
+
+    @PutMapping("/{id}/approve")
+    public ActualOvertimeDto approve(@PathVariable Long id) {
+        return service.approve(id);
+    }
+
+    @PutMapping("/{id}/reject")
+    public ActualOvertimeDto reject(@PathVariable Long id) {
+        return service.reject(id);
+    }
 }

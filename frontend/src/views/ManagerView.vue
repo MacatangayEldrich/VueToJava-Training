@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import ApprovalList from '../components/ApprovalList.vue'
+import PlannedOTApprovalList from '../components/PlannedOTApprovalList.vue';
+import ActualOTApprovalList from '../components/ActualOTApprovalList.vue';
 
 const formattedDate = new Intl.DateTimeFormat('en-US', {
   weekday: 'long',
@@ -14,6 +15,7 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
   <section class="route-view" aria-labelledby="manager-title">
     <p class="eyebrow">{{ formattedDate }}<span class="heading-divider">/</span> Manager space</p>
 
-    <ApprovalList />
+    <PlannedOTApprovalList />
+    <ActualOTApprovalList />
   </section>
 </template>

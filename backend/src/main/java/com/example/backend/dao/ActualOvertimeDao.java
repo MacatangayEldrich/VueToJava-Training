@@ -108,4 +108,8 @@ public class ActualOvertimeDao {
     public String getRemarks() {
         return remarks;
     }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }
