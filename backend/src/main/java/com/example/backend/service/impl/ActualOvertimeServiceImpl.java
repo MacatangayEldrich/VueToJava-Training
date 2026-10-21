@@ -6,6 +6,7 @@ import com.example.backend.repository.ActualOvertimeRepository;
 import com.example.backend.service.ActualOvertimeService;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class ActualOvertimeServiceImpl extends AbstractCrudService<ActualOvertimeDao, ActualOvertimeDto> implements ActualOvertimeService {
     public ActualOvertimeServiceImpl(ActualOvertimeRepository repository) {
@@ -13,8 +14,9 @@ public class ActualOvertimeServiceImpl extends AbstractCrudService<ActualOvertim
     }
 
     protected Long idOf(ActualOvertimeDto dto) { return dto.aoId(); }
+
     protected ActualOvertimeDao toEntity(ActualOvertimeDto dto) {
-        return new ActualOvertimeDao(dto.aoId(), dto.poId(), dto.managerId(), dto.status(), dto.activity(),
+        return new ActualOvertimeDao(dto.poId(), dto.managerId(), dto.status(), dto.activity(),
                 dto.renderedHours(), dto.earnedHours(), dto.fillingDate(), dto.actualDate(),
                 dto.expirationDate(), dto.remarks());
     }
@@ -23,4 +25,5 @@ public class ActualOvertimeServiceImpl extends AbstractCrudService<ActualOvertim
                 entity.getActivity(), entity.getRenderedHours(), entity.getEarnedHours(), entity.getFillingDate(),
                 entity.getActualDate(), entity.getExpirationDate(), entity.getRemarks());
     }
+
 }

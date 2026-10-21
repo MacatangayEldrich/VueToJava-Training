@@ -50,10 +50,9 @@ public class ActualOvertimeDao {
     protected ActualOvertimeDao() {
     }
 
-    public ActualOvertimeDao(Long aoId, Long poId, Long managerId, String status, String activity,
+    public ActualOvertimeDao(Long poId, Long managerId, String status, String activity,
             Integer renderedHours, BigDecimal earnedHours, LocalDate fillingDate,
             LocalDate actualDate, LocalDate expirationDate, String remarks) {
-        this.aoId = aoId;
         this.poId = poId;
         this.managerId = managerId;
         this.status = status;
