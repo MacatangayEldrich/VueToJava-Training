@@ -16,7 +16,7 @@ public class ApprovalListRepositoryImpl implements ApprovalListRepository {
     private EntityManager entityManager;
 
     @Override
-    public List<ApprovalListDto> findAll() {
+    public List<ApprovalListDto> findAllByManagerId(Long managerId) {
         String sql = """
             SELECT
                 p.PO_ID AS REQUEST_ID, 
@@ -27,6 +27,7 @@ public class ApprovalListRepositoryImpl implements ApprovalListRepository {
             FROM PLANNED_OVERTIME p
             INNER JOIN EMPLOYEE e
                 ON p.EMPLOYEE_ID = e.EMPLOYEE_ID
+            where p.MANAGER_ID = :managerId
 
             UNION ALL
             
@@ -41,11 +42,13 @@ public class ApprovalListRepositoryImpl implements ApprovalListRepository {
                 ON p.PO_ID = a.PO_ID
             INNER JOIN EMPLOYEE e
                 ON p.EMPLOYEE_ID = e.EMPLOYEE_ID
+            where p.MANAGER_ID = :managerId
 
             ORDER BY FILLING_DATE;
             """;
 
         Query query = entityManager.createNativeQuery(sql);
+        query.setParameer("managerId", managerId);
 
         @SuppressWarnings("unchecked")
         List<Object[]> rows = query.getResultList();

@@ -5,5 +5,5 @@ import com.example.backend.dto.ApprovalListDto;
 import java.util.List;
 
 public interface ApprovalListRepository {
-    List<ApprovalListDto> findAll();
+    List<ApprovalListDto> findAllByManagerId(Long managerId);
 }

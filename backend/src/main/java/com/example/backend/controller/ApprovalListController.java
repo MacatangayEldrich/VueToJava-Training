@@ -17,8 +17,8 @@ public class ApprovalListController {
         this.service = service;
     }
 
-    @GetMapping
-    public List<ApprovalListDto> findAll() {
-        return service.findAll();
+    @GetMapping("/{id}")
+    public List<ApprovalListDto> findAllByManagerId(@PathVariable Long managerId) {
+        return service.findAllByManagerId(managerId);
     }
 }

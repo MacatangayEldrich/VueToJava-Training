@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ActualOvertimeServiceImpl extends AbstractCrudService<ActualOvertimeDao, ActualOvertimeDto> implements ActualOvertimeService {
+    private final ActualOvertimeRepository repository;
     public ActualOvertimeServiceImpl(ActualOvertimeRepository repository) {
         super(repository);
+        this.repository = repository;
     }
 
     protected Long idOf(ActualOvertimeDto dto) { return dto.aoId(); }
@@ -22,5 +24,21 @@ public class ActualOvertimeServiceImpl extends AbstractCrudService<ActualOvertim
         return new ActualOvertimeDto(entity.getAoId(), entity.getPoId(), entity.getManagerId(), entity.getStatus(),
                 entity.getActivity(), entity.getRenderedHours(), entity.getEarnedHours(), entity.getFillingDate(),
                 entity.getActualDate(), entity.getExpirationDate(), entity.getRemarks());
+    }
+
+    public ActualOvertimeDto approve(Long id) {
+        ActualOvertimeDao entity = repository.findById(id).orElseThrow();
+
+        entity.setStatus("APPROVED");
+
+        return toDto(repository.save(entity));
+    }
+
+    public ActualOvertimeDto reject(Long id) {
+        ActualOvertimeDao entity = repository.findById(id).orElseThrow();
+
+        entity.setStatus("REJECTED");
+
+        return toDto(repository.save(entity));
     }
 }
