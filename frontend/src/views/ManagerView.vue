@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import PlannedOTApprovalList from '../components/PlannedOTApprovalList.vue';
 import ActualOTApprovalList from '../components/ActualOTApprovalList.vue';
+import PlannedOTApprovalList from '../components/PlannedOTApprovalList.vue';
 
 const formattedDate = new Intl.DateTimeFormat('en-US', {
   weekday: 'long',

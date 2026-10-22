@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
-import { useApprovalListStore } from '../stores/approvalListStore'
-import type { ApprovalListItem } from '../stores/approvalListStore'
-import { useOvertimeRequestStore } from '../stores/overtimeRequestStore'
-import { useMasterDataStore } from '../stores/masterDataStore'
+import { useApprovalListStore } from '../stores/approvalListStore.ts'
+import type { ApprovalListItem } from '../stores/approvalListStore.ts'
+import { useOvertimeRequestStore } from '../stores/overtimeRequestStore.ts'
+import { useMasterDataStore } from '../stores/masterDataStore.ts'
 import RequestDetails from './RequestDetails.vue'
 
 const overtimeStore = useOvertimeRequestStore()
@@ -14,18 +14,19 @@ const showPopup = ref(false)
 const detailError = ref<string | null>(null)
 
 const viewIcon = '\u{1F50D}'
+const requestType = 'Actual Overtime'
 
 const openRequest = async (request: ApprovalListItem) => {
     detailError.value = null
     try {
-        await overtimeStore.loadOvertimeDetails(request.requestId)
+        await overtimeStore.loadActualOvertimeDetails(request.requestId)
         if (overtimeStore.error) throw new Error(overtimeStore.error)
         const details = overtimeStore.request
         if (!details) throw new Error('Unable to load request details.')
-
-        await Promise.all([
-            masterDataStore.loadEmployee(details.employeeId),
-            masterDataStore.loadWorkdayType(details.workdayId)
+		// const poDetails = overtimeStore.loadPlannedOvertimeDetails(request.requestId)
+        // await Promise.all([
+        //     masterDataStore.loadEmployee(poDetails.employeeId),
+        //     masterDataStore.loadWorkdayType(poDetails.workdayId)
         ])
         showPopup.value = true
     } catch (cause) {
@@ -57,7 +58,7 @@ const requestDetails = computed(() => ({
 			<div><h2 id="ledger-title">Actual Overtime Approval Queue</h2></div>
 		</div>
 		<div class="table-scroll approval-table">
-			<RequestDetails :show="showPopup" :request="requestDetails" @close="showPopup = false; approvalStore.loadApprovalList();" />
+			<RequestDetails :show="showPopup" :request="requestDetails" :requestType="requestType" @close="showPopup = false; approvalStore.loadApprovalList();" />
 			<p v-if="detailError" class="form-hint" role="alert">{{ detailError }}</p>
 			<table class="overtime-table">
 				<thead>

@@ -48,7 +48,7 @@ public class ApprovalListRepositoryImpl implements ApprovalListRepository {
             """;
 
         Query query = entityManager.createNativeQuery(sql);
-        query.setParameer("managerId", managerId);
+        query.setParameter("managerId", managerId);
 
         @SuppressWarnings("unchecked")
         List<Object[]> rows = query.getResultList();
