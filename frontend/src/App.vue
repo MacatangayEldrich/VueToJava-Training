@@ -85,7 +85,7 @@ onUnmounted(() => window.removeEventListener('hashchange', syncRoute))
       </aside>
 
       <EmployeeView v-show="activeRoute === 'employee'" :employee-id="employeeId" />
-      <ManagerView v-show="activeRoute === 'manager'" />
+      <ManagerView v-show="activeRoute === 'manager'" :employee-id="employeeId" />
     </div>
 
     <footer class="page-footer">

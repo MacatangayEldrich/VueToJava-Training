@@ -2,14 +2,14 @@
 import { onMounted, ref, computed } from 'vue'
 import { useApprovalListStore } from '../stores/approvalListStore.ts'
 import type { ApprovalListItem } from '../stores/approvalListStore.ts'
-import { useOvertimeRequestStore } from '../stores/overtimeRequestStore.ts'
-import { useMasterDataStore } from '../stores/masterDataStore.ts'
+import { useOvertimeRequestStore } from '../stores/overtimeRequestStore.js'
+import { useMasterDataStore } from '../stores/masterDataStore.js'
 import RequestDetails from './RequestDetails.vue'
 
+const props = defineProps<{ employeeId: number}>()
 const overtimeStore = useOvertimeRequestStore()
 const approvalStore = useApprovalListStore()
 const masterDataStore = useMasterDataStore()
-
 const showPopup = ref(false)
 const detailError = ref<string | null>(null)
 
@@ -27,7 +27,7 @@ const openRequest = async (request: ApprovalListItem) => {
         // await Promise.all([
         //     masterDataStore.loadEmployee(poDetails.employeeId),
         //     masterDataStore.loadWorkdayType(poDetails.workdayId)
-        ])
+        // ])
         showPopup.value = true
     } catch (cause) {
         detailError.value = cause instanceof Error ? cause.message : 'Unable to load request details.'
@@ -35,7 +35,7 @@ const openRequest = async (request: ApprovalListItem) => {
 }
 
 onMounted(async () => {
-    await approvalStore.loadApprovalList()  
+    await approvalStore.loadApprovalList(props.employeeId)  
 })
 
 const requestDetails = computed(() => ({
@@ -58,7 +58,7 @@ const requestDetails = computed(() => ({
 			<div><h2 id="ledger-title">Actual Overtime Approval Queue</h2></div>
 		</div>
 		<div class="table-scroll approval-table">
-			<RequestDetails :show="showPopup" :request="requestDetails" :requestType="requestType" @close="showPopup = false; approvalStore.loadApprovalList();" />
+			<RequestDetails :show="showPopup" :request="requestDetails" :requestType="requestType" @close="showPopup = false; approvalStore.loadApprovalList(props.employeeId);" />
 			<p v-if="detailError" class="form-hint" role="alert">{{ detailError }}</p>
 			<table class="overtime-table">
 				<thead>

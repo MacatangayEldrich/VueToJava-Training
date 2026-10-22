@@ -16,12 +16,14 @@ export const useApprovalListStore = defineStore(
         const loading = ref(false)
         const error = ref<string | null>(null)
 
-        const loadApprovalList = async() => {
+        const loadApprovalList = async(
+            managerId: number
+        ) => {
             loading.value = true
             error.value = null
 
             try {
-                const response = await fetch ('/v1/approval-list')
+                const response = await fetch (`/v1/approval-list/manager/${managerId}`)
 
                 if(!response.ok) {
                     throw new Error(`Failed to load (${response.status})`)
