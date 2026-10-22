@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import type { PlannedOvertime } from '../models/overtime'
+import { ref, watch, computed } from 'vue'
+import type { ActualOvertime, PlannedOvertime } from '../models/overtime'
+import ActualOvertimeForm from '../components/ActualOvertimeForm.vue' 
+import axios from 'axios';
 
 interface PlannedOvertimePage {
   content: PlannedOvertime[]
@@ -11,12 +13,19 @@ interface PlannedOvertimePage {
 
 const props = defineProps<{ employeeId: number; refreshKey: number }>()
 const plans = ref<PlannedOvertime[]>([])
+const activePlannedOvertime = ref<PlannedOvertime[]>([])
+const actualOTPlans = ref<ActualOvertime[]>([])
 const currentPage = ref(0)
 const totalPages = ref(0)
 const totalElements = ref(0)
 const loading = ref(false)
 const errorMessage = ref('')
 const pageSize = 5
+const selectedPlanId = ref<number | null>(null)
+const usedPoIds = computed(
+  () => new Set(actualOTPlans.value.map(ao => ao.poId))
+)
+
 
 watch(
   () => [props.employeeId, props.refreshKey, currentPage.value] as const,
@@ -51,6 +60,14 @@ watch(
       currentPage.value = result.number
       totalPages.value = result.totalPages
       totalElements.value = result.totalElements
+
+      const actualOTresponse = await axios.get('/v1/planned-overtimes/getActualPlannedOvertimes')
+      actualOTPlans.value = actualOTresponse.data
+      // alert(actualOTPlans.value
+      //   .map(otplan => `po_Id:  ${otplan.poId}`)
+      // .join('\n\n')
+      // )
+
     } catch (error) {
       if (controller.signal.aborted) return
       errorMessage.value = error instanceof Error ? error.message : 'Unable to load planned overtime.'
@@ -78,6 +95,10 @@ function formatDate(dateValue: string) {
     day: 'numeric',
   })
 }
+
+function editPlannedOT(plan: PlannedOvertime) {
+  selectedPlanId.value = selectedPlanId.value === plan.poId ? null : plan.poId
+}
 </script>
 
 <template>
@@ -98,6 +119,10 @@ function formatDate(dateValue: string) {
         <time>{{ formatDate(plan.plannedDate) }}</time>
         <strong>{{ plan.activity }}</strong>
         <span>{{ plan.plannedHours }}</span>
+        <button v-if="plan.status ==='APPROVED' && !usedPoIds.has(plan.poId)" type="button" @click="editPlannedOT(plan)" class="action-btn primary">
+          <span>📝 Log Actual overtime</span>
+        </button>
+          <ActualOvertimeForm class="overtime-forms" v-if="selectedPlanId == plan.poId" :plan="plan"/>
       </article>
     </div>
     <p v-else class="empty-state">No overtime planned yet. Add a plan above to keep track of upcoming work.</p>
