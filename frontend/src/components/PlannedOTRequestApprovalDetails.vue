@@ -6,13 +6,13 @@ const overtimeStore = useOvertimeRequestStore()
 const props = defineProps<{ request: any }>()
 
 const approveRequest = async () => {
-    await overtimeStore.approveRequest(props.request.poId)
+    await overtimeStore.approvePlannedRequest(props.request.poId)
 
     emit('close')
 }
 
 const rejectRequest = async () => {
-    await overtimeStore.rejectRequest(props.request.poId)
+    await overtimeStore.rejectPlannedRequest(props.request.poId)
 
     emit('close')
 }
@@ -22,7 +22,7 @@ const emit = defineEmits<{ close: []}>()
 <template>
     <form class="content-section overtime-form plan-form">
         <div class="section-heading">
-            <div><h2>Request Details</h2></div>
+            <div><h2>Planned Overtime Request Details</h2></div>
         </div>
         <label>
             Request Type

@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import OvertimeRequestDetails from './OvertimeRequestDetails.vue'
+import ActualOTRequestApprovalDetails from './ActualOTRequestApprovalDetails.vue';
+import PlannedOTRequestApprovalDetails from './PlannedOTRequestApprovalDetails.vue';
 
 const props = defineProps<{ 
     show: boolean,
-    request: any
+    request: any,
+    requestType: string
 }>()
 
 const emit = defineEmits<{ close: []}>()
+alert(props.requestType)
 </script>
 
 <template>
@@ -15,7 +18,8 @@ const emit = defineEmits<{ close: []}>()
             <button class="close-button" @click="emit('close')">
                 X
             </button>
-            <OvertimeRequestDetails :request="props.request" @close="emit('close')"/>
+            <PlannedOTRequestApprovalDetails :request="props.request" v-if="props.requestType === 'Overtime Request'" @close="emit('close')"/>
+            <ActualOTRequestApprovalDetails :request="props.request" v-if="props.requestType === 'Actual Overtime'" @close="emit('close')"/>
 
             <!-- TODO: Actual Overtime Details -->
 
