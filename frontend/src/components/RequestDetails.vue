@@ -9,7 +9,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{ close: []}>()
-alert(props.requestType)
+
 </script>
 
 <template>
