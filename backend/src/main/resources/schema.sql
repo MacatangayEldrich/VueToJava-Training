@@ -64,7 +64,7 @@ CREATE TABLE actual_overtime (
     filling_date DATE NOT NULL,
     actual_date DATE NOT NULL,
     expiration_date DATE NOT NULL,
-    remarks  VARCHAR(255) NOT NULL,
+    remarks  VARCHAR(255),
     
     CONSTRAINT fk_ao_planned_overtime
         FOREIGN KEY (po_id)
