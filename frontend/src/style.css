@@ -1207,7 +1207,7 @@ code {
 .plan-header,
 .plan-item {
   display: grid;
-  grid-template-columns: 120px minmax(0, 1fr) 150px 150px;
+  grid-template-columns: 120px minmax(0, 1fr) 120px 120px 120px;
   align-items: center;
   gap: 5px;
   min-height: 51px;
@@ -1228,9 +1228,13 @@ code {
 
 .plan-item strong {
   overflow: hidden;
-  color: var(--ink);
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.plan-header > *,
+.plan-item > * {
+  min-width: 0;
 }
 
 .ledger-note {
