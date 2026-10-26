@@ -82,7 +82,7 @@ public class ApprovalListRepositoryImpl implements ApprovalListRepository {
                     ((Number) row[0]).longValue(),  //poId
                     ((Number) row[1]).longValue(),  //employeeId
                     ((Number) row[2]).longValue(),  //workdayId
-                    ((Number) row[3]).longValue(),  //managerId
+                    (row[3] != null ? ((Number) row[3]).longValue() : null),  //managerId
                     (String) row[4],               //activity
                     ((Number) row[5]).intValue(),   //plannedHours
                     ((Date) row[6]).toLocalDate(),  //fillingDate

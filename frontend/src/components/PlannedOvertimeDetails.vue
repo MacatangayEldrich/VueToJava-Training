@@ -107,18 +107,21 @@ function editPlannedOT(plan: PlannedOvertime) {
     <p v-else-if="errorMessage" class="empty-state" role="alert">{{ errorMessage }}</p>
     <div v-else-if="plans.length" class="plan-list">
       <div class="plan-header" style="font-size: 1rem">
-        <strong>Planned Date</strong>
+        <strong>Date</strong>
         <strong>Activity</strong>
-        <strong>Planned Hour/s</strong>
+        <strong>Hour/s</strong>
+        <strong>Status</strong>
+        <strong>Action</strong>
       </div>
       <article v-for="plan in plans" :key="plan.poId" class="plan-item">
         <time>{{ formatDate(plan.plannedDate) }}</time>
         <strong>{{ plan.activity }}</strong>
         <span>{{ plan.plannedHours }}</span>
-        <button v-if="plan.status ==='APPROVED' && !usedPoIds.has(plan.poId)" type="button" @click="editPlannedOT(plan)" class="action-btn primary">
-          <span>📝 Log Actual overtime</span>
+        <span>{{ plan.status }}</span>
+        <button v-if="plan.status ==='APPROVED' && usedPoIds.has(plan.poId)" type="button" @click="editPlannedOT(plan)" class="action-btn primary">
+          <span>📝</span>
         </button>
-          <ActualOvertimeForm class="overtime-forms" v-if="selectedPlanId == plan.poId" :plan="plan"/>
+        <ActualOvertimeForm class="overtime-forms" v-if="selectedPlanId == plan.poId" :plan="plan"/>
       </article>
     </div>
     <p v-else class="empty-state">No overtime planned yet. Add a plan above to keep track of upcoming work.</p>
