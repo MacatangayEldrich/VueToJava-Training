@@ -11,8 +11,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface PlannedOvertimeRepository extends JpaRepository<PlannedOvertimeDao, Long> {
     Page<PlannedOvertimeDao> findByEmployeeId(Long employeeId, Pageable pageable);
-    
-    @Query(value = "SELECT * FROM PLANNED_OVERTIME WHERE PO_ID NOT IN (SELECT PO_ID FROM ACTUAL_OVERTIME)", nativeQuery=true)
-    List<PlannedOvertimeDao> findActualPlannedOT();
+
 
 }

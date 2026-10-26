@@ -14,6 +14,5 @@ public interface PlannedOvertimeService extends CrudService<PlannedOvertimeDto> 
     PlannedOvertimeDto reject(Long id);
     
     Page<PlannedOvertimeDto> findByEmployeeId(Long employeeId, Pageable pageable);
-    
-    List<PlannedOvertimeDto> findActualPlannedOT();
+
 }

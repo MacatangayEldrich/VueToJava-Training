@@ -38,11 +38,11 @@ const form = ref<ActualOvertime>({
 function expirationDate(dateValue: string) {
 	const [year, month, day] = dateValue.split('-').map(Number)
 	const expiry = new Date(year, month - 1, day)
-	expiry.setMonth(expiry.getMonth() + 3)
-  if (expiry.getDate() !== day) {
-	  expiry.setDate(0)
-  }
-  return localDateValue(expiry)
+	expiry.setFullYear(expiry.getFullYear() + 1)
+	if (expiry.getMonth() !== month - 1) {
+		expiry.setDate(0)
+	}
+	return localDateValue(expiry)
 }
 
 async function submitForm() {
@@ -92,6 +92,6 @@ async function submitForm() {
 		</label>
 		<button class="submit-button coral-submit" :disabled="isSubmitted" type="submit" v-if="!isSubmitted">Record actual overtime<span aria-hidden="true">+</span></button>
 		<button class="button actual-submit" :disabled="isSubmitted" type="submit" v-if="isSubmitted" :readOnly="isSubmitted">Submitted<span aria-hidden="true">+</span></button>
-		<p class="form-hint">CTO earned = overtime hours × factor rate. CTO expires 3 months from the day work was rendered.</p>
+		<p class="form-hint">CTO earned = overtime hours × factor rate. CTO expires 45 days from the day work was rendered.</p>
 	</form>
 </template>

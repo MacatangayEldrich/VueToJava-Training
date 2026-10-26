@@ -61,12 +61,8 @@ watch(
       totalPages.value = result.totalPages
       totalElements.value = result.totalElements
 
-      const actualOTresponse = await axios.get('/v1/planned-overtimes/getActualPlannedOvertimes')
+      const actualOTresponse = await axios.get(`/v1/approval-list/actual-planned-overtimes-by-employee/${Number(props.employeeId)}`)
       actualOTPlans.value = actualOTresponse.data
-      // alert(actualOTPlans.value
-      //   .map(otplan => `po_Id:  ${otplan.poId}`)
-      // .join('\n\n')
-      // )
 
     } catch (error) {
       if (controller.signal.aborted) return

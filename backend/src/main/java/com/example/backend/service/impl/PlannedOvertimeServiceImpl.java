@@ -51,10 +51,5 @@ public class PlannedOvertimeServiceImpl extends AbstractCrudService<PlannedOvert
         entity.setStatus("REJECTED");
 
         return toDto(repository.save(entity));
-    }    
-
-    @Override
-    public List<PlannedOvertimeDto> findActualPlannedOT() {
-        return repository.findActualPlannedOT().stream().map(this::toDto).collect(Collectors.toList());
     }
 }

@@ -1,6 +1,7 @@
 package com.example.backend.repository.impl;
 
 import com.example.backend.dto.ApprovalListDto;
+import com.example.backend.dto.PlannedOvertimeDto;
 import com.example.backend.repository.ApprovalListRepository;
 
 import jakarta.persistence.EntityManager;
@@ -57,6 +58,36 @@ public class ApprovalListRepositoryImpl implements ApprovalListRepository {
                     (String) row[2],
                     ((Date) row[3]).toLocalDate(),
                     (String) row[4]))
+                .toList();
+    }
+
+    @Override
+    public List<PlannedOvertimeDto> findActualPlannedOTByEmployeeId(Long employeeId) {
+        String sql = """
+            SELECT * FROM PLANNED_OVERTIME PO 
+                WHERE NOT EXISTS 
+                    (SELECT 1 FROM ACTUAL_OVERTIME AO 
+                        WHERE AO.PO_ID = PO.PO_ID)
+                AND PO.EMPLOYEE_ID = :employeeId
+            """;
+
+        Query query = entityManager.createNativeQuery(sql);
+        query.setParameter("employeeId", employeeId);
+
+        @SuppressWarnings("unchecked")
+        List<Object[]> rows = query.getResultList();
+
+        return rows.stream()
+                .map(row -> new PlannedOvertimeDto(
+                    ((Number) row[0]).longValue(),  //poId
+                    ((Number) row[1]).longValue(),  //employeeId
+                    ((Number) row[2]).longValue(),  //workdayId
+                    ((Number) row[3]).longValue(),  //managerId
+                    (String) row[4],               //activity
+                    ((Number) row[5]).intValue(),   //plannedHours
+                    ((Date) row[6]).toLocalDate(),  //fillingDate
+                    ((Date) row[7]).toLocalDate(),  //plannedDate
+                    (String) row[8]))                //status
                 .toList();
     }
 }
