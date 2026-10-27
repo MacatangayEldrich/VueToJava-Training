@@ -4,8 +4,8 @@ import com.example.backend.dto.ActualOvertimeDto;
 
 public interface ActualOvertimeService extends CrudService<ActualOvertimeDto> {
 
-    ActualOvertimeDto approve(Long id);
+    ActualOvertimeDto approve(Long id, Long employeeId);
 
-    ActualOvertimeDto reject(Long id);
+    ActualOvertimeDto reject(Long id, Long employeeId);
 
 }

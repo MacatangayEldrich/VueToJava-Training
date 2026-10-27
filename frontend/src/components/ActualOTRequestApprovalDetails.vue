@@ -3,16 +3,15 @@ import { useOvertimeRequestStore } from '../stores/overtimeRequestStore'
 
 const overtimeStore = useOvertimeRequestStore()
 
-const props = defineProps<{ request: any }>()
-
+const props = defineProps<{ request: any, employeeId: number }>()
 const approveRequest = async () => {
-    await overtimeStore.approveActualRequest(props.request.poId)
+    await overtimeStore.approveActualRequest(props.request.aoId, props.employeeId)
 
     emit('close')
 }
 
 const rejectRequest = async () => {
-    await overtimeStore.rejectActualRequest(props.request.poId)
+    await overtimeStore.rejectActualRequest(props.request.aoId, props.employeeId)
 
     emit('close')
 }
@@ -58,9 +57,13 @@ const emit = defineEmits<{ close: []}>()
             Work / reason
             <div class="field-value">{{ props.request?.activity }}</div>
         </label>
+        <label>
+            Remarks
+            <div class="field-value">{{ props.request?.remarks }}</div>
+        </label>
         <div class="form-row">
-            <button class="submit-button coral-submit" type="button" @click="rejectRequest">Reject</button>
-            <button class="submit-button" type="button" @click="approveRequest">Approve</button>
+            <button class="submit-button coral-submit" type="button" v-if="props.request?.status === 'APPROVED'" @click="rejectRequest">Reject</button>
+            <button class="submit-button" type="button" v-if="props.request?.status === 'REJECTED'" @click="approveRequest">Approve</button>
         </div>
     </form>
 </template>

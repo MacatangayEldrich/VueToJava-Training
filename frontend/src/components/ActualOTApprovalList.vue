@@ -23,16 +23,12 @@ const openRequest = async (request: ApprovalListItem) => {
         if (overtimeStore.error) throw new Error(overtimeStore.error)
         const details = overtimeStore.request
         if (!details) throw new Error('Unable to load request details.')
-		// const poDetails = overtimeStore.loadPlannedOvertimeDetails(request.requestId)
-        // await Promise.all([
-        //     masterDataStore.loadEmployee(poDetails.employeeId),
-        //     masterDataStore.loadWorkdayType(poDetails.workdayId)
-        // ])
         showPopup.value = true
     } catch (cause) {
         detailError.value = cause instanceof Error ? cause.message : 'Unable to load request details.'
     }
 }
+
 
 onMounted(async () => {
     await approvalStore.loadApprovalList(props.employeeId)  
@@ -58,7 +54,7 @@ const requestDetails = computed(() => ({
 			<div><h2 id="ledger-title">Actual Overtime Approval Queue</h2></div>
 		</div>
 		<div class="table-scroll approval-table">
-			<RequestDetails :show="showPopup" :request="requestDetails" :requestType="requestType" @close="showPopup = false; approvalStore.loadApprovalList(props.employeeId);" />
+			<RequestDetails :show="showPopup" :request="requestDetails" :employee-id="props.employeeId" :requestType="requestType" @close="showPopup = false; approvalStore.loadApprovalList(props.employeeId);" />
 			<p v-if="detailError" class="form-hint" role="alert">{{ detailError }}</p>
 			<table class="overtime-table">
 				<thead>
@@ -84,7 +80,7 @@ const requestDetails = computed(() => ({
 					</tr>
 				</tbody>
 				<tbody>
-					<tr><td class="table-empty" colspan="5">Showing 1-{{ approvalStore.requests.length}} of {{ approvalStore.requests.length}} records</td></tr>
+					<tr><td class="table-empty" colspan="5">Showing 1-{{ approvalStore.requests.filter(item => item.requestType  === 'Actual Overtime').length}} of {{ approvalStore.requests.filter(item => item.requestType  === 'Actual Overtime').length}} records</td></tr>
 				</tbody>
 			</table>
 		</div>

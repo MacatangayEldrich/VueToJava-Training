@@ -3,13 +3,18 @@ CREATE TABLE employee (
     employee_name VARCHAR(255) NOT NULL,
     department VARCHAR(100),
     position VARCHAR(100),
+    role_id INT,
     work_days VARCHAR(100),
     work_hours VARCHAR(100)
 );
 
 CREATE TABLE manager (
     manager_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    manager_name VARCHAR(255) NOT NULL
+    employee_id BIGINT NOT NULL,
+    manager_name VARCHAR(255) NOT NULL,
+    CONSTRAINT fk_m_employee
+        FOREIGN KEY (employee_id)
+        REFERENCES employee(employee_id)
 );
 
 CREATE TABLE reporting_lines (

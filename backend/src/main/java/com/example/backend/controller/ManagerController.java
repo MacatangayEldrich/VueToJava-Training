@@ -32,6 +32,11 @@ public class ManagerController {
     public ManagerDto findById(@PathVariable Long id) {
         return service.findById(id);
     }
+    
+    @GetMapping("/employee/{id}")
+    public ManagerDto findByEmployee(@PathVariable Long id) {
+        return service.findById(id);
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

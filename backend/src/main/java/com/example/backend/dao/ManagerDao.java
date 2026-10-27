@@ -15,16 +15,21 @@ public class ManagerDao {
     @Column(name = "manager_id")
     private Long managerId;
 
+    @Column(name = "employee_id")
+    private Long employeeId;
+
     @Column(name = "manager_name", nullable = false)
     private String managerName;
 
     protected ManagerDao() {}
 
-    public ManagerDao(Long managerId, String managerName) {
+    public ManagerDao(Long managerId, Long employeeId, String managerName) {
         this.managerId = managerId;
+        this.employeeId = employeeId;
         this.managerName = managerName;
     }
 
     public Long getManagerId() { return managerId; }
+    public Long getEmployeeId() { return employeeId; }
     public String getManagerName() { return managerName; }
 }
