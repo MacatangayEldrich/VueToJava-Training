@@ -26,7 +26,7 @@ const emit = defineEmits<{ close: []}>()
         </div>
         <label>
             Request Type
-            <div class="field-value">{{ props.request?.poId }}</div>
+            <div class="field-value">{{ props.request?.requestType }}</div>
         </label>
         <label>
             Request Date
@@ -56,7 +56,7 @@ const emit = defineEmits<{ close: []}>()
         </label>
         <label>
             Work / reason
-            <div class="field-value">{{ props.request?.otDescription }}</div>
+            <div class="field-value">{{ props.request?.activity }}</div>
         </label>
         <div class="form-row">
             <button class="submit-button coral-submit" type="button" @click="rejectRequest">Reject</button>
