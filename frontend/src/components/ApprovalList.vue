@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import { onMounted, ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useApprovalListStore } from '../stores/approvalListStore'
 import type { ApprovalListItem } from '../stores/approvalListStore'
 import { useOvertimeRequestStore } from '../stores/overtimeRequestStore'
 import { useMasterDataStore } from '../stores/masterDataStore'
 import RequestDetails from './RequestDetails.vue'
+import { useOvertimeSyncStore } from '../stores/overtimeSyncStore'
 
 const overtimeStore = useOvertimeRequestStore()
 const approvalStore = useApprovalListStore()
 const masterDataStore = useMasterDataStore()
+const overtimeSyncStore = useOvertimeSyncStore()
 
 const showPopup = ref(false)
 const detailError = ref<string | null>(null)
@@ -16,16 +18,17 @@ const detailError = ref<string | null>(null)
 const viewIcon = '\u{1F50D}'
 
 const openRequest = async (request: ApprovalListItem) => {
+	if (request.requestType !== 'Overtime Request') return // for removal upon Actual Overtime approval implementation
     detailError.value = null
     try {
-        await overtimeStore.loadOvertimeDetails(request.requestId)
+		await overtimeStore.loadOvertimeDetails(request.requestId)
         if (overtimeStore.error) throw new Error(overtimeStore.error)
         const details = overtimeStore.request
         if (!details) throw new Error('Unable to load request details.')
 
         await Promise.all([
-            masterDataStore.loadEmployee(details.employeeId),
-            masterDataStore.loadWorkdayType(details.workdayId)
+			masterDataStore.loadEmployee(details.employeeId),
+			masterDataStore.loadWorkdayType(details.workdayId)
         ])
         showPopup.value = true
     } catch (cause) {
@@ -33,9 +36,11 @@ const openRequest = async (request: ApprovalListItem) => {
     }
 }
 
-onMounted(async () => {
-    await approvalStore.loadApprovalList()  
-})
+watch(
+	() => overtimeSyncStore.changeVersion,
+	() => approvalStore.loadApprovalList(),
+	{ immediate: true }
+)
 
 const requestDetails = computed(() => ({
 	...(overtimeStore.request ?? {}),
@@ -57,7 +62,7 @@ const requestDetails = computed(() => ({
 			<div><h2 id="ledger-title">Approval Queue</h2></div>
 		</div>
 		<div class="table-scroll approval-table">
-			<RequestDetails :show="showPopup" :request="requestDetails" @close="showPopup = false; approvalStore.loadApprovalList();" />
+			<RequestDetails :show="showPopup" :request="requestDetails" @close="showPopup = false" />
 			<p v-if="detailError" class="form-hint" role="alert">{{ detailError }}</p>
 			<table class="overtime-table">
 				<thead>

@@ -3,6 +3,7 @@ import { ref, watch, computed } from 'vue'
 import type { ActualOvertime, PlannedOvertime } from '../models/overtime'
 import ActualOvertimeForm from '../components/ActualOvertimeForm.vue' 
 import axios from 'axios';
+import { useOvertimeSyncStore } from '../stores/overtimeSyncStore'
 
 interface PlannedOvertimePage {
   content: PlannedOvertime[]
@@ -11,7 +12,8 @@ interface PlannedOvertimePage {
   totalElements: number
 }
 
-const props = defineProps<{ employeeId: number; refreshKey: number }>()
+const props = defineProps<{ employeeId: number }>()
+const overtimeSyncStore = useOvertimeSyncStore()
 const plans = ref<PlannedOvertime[]>([])
 const activePlannedOvertime = ref<PlannedOvertime[]>([])
 const actualOTPlans = ref<ActualOvertime[]>([])
@@ -28,7 +30,7 @@ const usedPoIds = computed(
 
 
 watch(
-  () => [props.employeeId, props.refreshKey, currentPage.value] as const,
+  () => [props.employeeId, overtimeSyncStore.changeVersion, currentPage.value] as const,
   async ([employeeId, refreshKey, page], previous, onCleanup) => {
     if (
       previous &&
