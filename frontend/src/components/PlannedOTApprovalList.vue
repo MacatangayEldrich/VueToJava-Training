@@ -59,7 +59,7 @@ const requestDetails = computed(() => ({
 			<div><h2 id="ledger-title">Planned Overtime Approval Queue</h2></div>
 		</div>
 		<div class="table-scroll approval-table">
-			<RequestDetails :show="showPopup" :request="requestDetails" :requestType="requestType" @close="showPopup = false; approvalStore.loadApprovalList(props.employeeId);" />
+			<RequestDetails :show="showPopup" :request="requestDetails" :employee-id="props.employeeId" :requestType="requestType" @close="showPopup = false; approvalStore.loadApprovalList(props.employeeId);" />
 			<p v-if="detailError" class="form-hint" role="alert">{{ detailError }}</p>
 			<table class="overtime-table">
 				<thead>
@@ -85,7 +85,7 @@ const requestDetails = computed(() => ({
 					</tr>
 				</tbody>
 				<tbody>
-					<tr><td class="table-empty" colspan="5">Showing 1-{{ approvalStore.requests.length}} of {{ approvalStore.requests.length}} records</td></tr>
+					<tr><td class="table-empty" colspan="5">Showing 1-{{ approvalStore.requests.filter(item => item.requestType  === 'Actual Overtime').length}} of {{ approvalStore.requests.filter(item => item.requestType  === 'Actual Overtime').length}} records</td></tr>
 				</tbody>
 			</table>
 		</div>

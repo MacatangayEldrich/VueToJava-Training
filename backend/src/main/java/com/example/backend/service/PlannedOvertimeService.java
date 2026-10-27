@@ -6,9 +6,9 @@ import org.springframework.data.domain.Pageable;
 
 public interface PlannedOvertimeService extends CrudService<PlannedOvertimeDto> {
 
-    PlannedOvertimeDto approve(Long id);
+    PlannedOvertimeDto approve(Long id, Long employeeId);
 
-    PlannedOvertimeDto reject(Long id);
+    PlannedOvertimeDto reject(Long id, Long employeeId);
     
     Page<PlannedOvertimeDto> findByEmployeeId(Long employeeId, Pageable pageable);
 }

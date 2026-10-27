@@ -5,7 +5,8 @@ import PlannedOTRequestApprovalDetails from './PlannedOTRequestApprovalDetails.v
 const props = defineProps<{ 
     show: boolean,
     request: any,
-    requestType: string
+    requestType: string,
+    employeeId: number
 }>()
 
 const emit = defineEmits<{ close: []}>()
@@ -18,8 +19,8 @@ const emit = defineEmits<{ close: []}>()
             <button class="close-button" @click="emit('close')">
                 X
             </button>
-            <PlannedOTRequestApprovalDetails :request="props.request" v-if="props.requestType === 'Overtime Request'" @close="emit('close')"/>
-            <ActualOTRequestApprovalDetails :request="props.request" v-if="props.requestType === 'Actual Overtime'" @close="emit('close')"/>
+            <PlannedOTRequestApprovalDetails :request="props.request" :employee-id="props.employeeId" v-if="props.requestType === 'Overtime Request'" @close="emit('close')"/>
+            <ActualOTRequestApprovalDetails :request="props.request" :employee-id="props.employeeId" v-if="props.requestType === 'Actual Overtime'" @close="emit('close')"/>
 
             <!-- TODO: Actual Overtime Details -->
 

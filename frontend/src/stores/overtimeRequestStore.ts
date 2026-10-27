@@ -54,10 +54,11 @@ export const useOvertimeRequestStore = defineStore(
         }
 
         const approvePlannedRequest = async(
-            requestId: number
+            requestId: number,
+            employeeId: number
         ) => {
             try {
-                const response = await fetch (`/v1/planned-overtimes/${requestId}/approve`,
+                const response = await fetch (`/v1/planned-overtimes/${requestId}/approve/${employeeId}`,
                     {
                         method: 'PUT'
                     }
@@ -75,10 +76,11 @@ export const useOvertimeRequestStore = defineStore(
         }
 
         const rejectPlannedRequest = async(
-            requestId: number
+            requestId: number,
+            employeeId: number
         ) => {
             try {
-                const response = await fetch (`/v1/planned-overtimes/${requestId}/reject`,
+                const response = await fetch (`/v1/planned-overtimes/${requestId}/reject/${employeeId}`,
                     {
                         method: 'PUT'
                     }
@@ -96,10 +98,11 @@ export const useOvertimeRequestStore = defineStore(
         }
 
         const approveActualRequest = async(
-            requestId: number
+            requestId: number,
+            employeeId: number
         ) => {
             try {
-                const response = await fetch (`/v1/actual-overtimes/${requestId}/approve`,
+                const response = await fetch (`/v1/actual-overtimes/${requestId}/approve/${employeeId}`,
                     {
                         method: 'PUT'
                     }
@@ -117,10 +120,11 @@ export const useOvertimeRequestStore = defineStore(
         }
 
         const rejectActualRequest = async(
-            requestId: number
+            requestId: number,
+            employeeId: number
         ) => {
             try {
-                const response = await fetch (`/v1/actual-overtimes/${requestId}/reject`,
+                const response = await fetch (`/v1/actual-overtimes/${requestId}/reject/${employeeId}`,
                     {
                         method: 'PUT'
                     }

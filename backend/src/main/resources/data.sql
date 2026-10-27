@@ -1,42 +1,49 @@
-INSERT INTO employee (employee_id, employee_name, department, position, work_days, work_hours) VALUES
-(1, 'Ava Martinez', 'Engineering', 'Software Engineer', 'Monday-Friday', '09:00-17:00'),
-(2, 'Liam Chen', 'Engineering', 'QA Engineer', 'Monday-Friday', '09:00-17:00'),
-(3, 'Noah Patel', 'Engineering', 'Backend Developer', 'Monday-Friday', '09:00-17:00'),
-(4, 'Mia Johnson', 'Engineering', 'Frontend Developer', 'Monday-Friday', '09:00-17:00'),
-(5, 'Ethan Garcia', 'Human Resources', 'HR Specialist', 'Monday-Friday', '08:00-16:00'),
-(6, 'Sophia Kim', 'Human Resources', 'Recruiter', 'Monday-Friday', '08:00-16:00'),
-(7, 'Lucas Brown', 'Human Resources', 'Training Coordinator', 'Monday-Friday', '08:00-16:00'),
-(8, 'Isabella Davis', 'Human Resources', 'Benefits Analyst', 'Monday-Friday', '08:00-16:00'),
-(9, 'Oliver Wilson', 'Finance', 'Financial Analyst', 'Monday-Friday', '08:30-16:30'),
-(10, 'Amelia Moore', 'Finance', 'Accountant', 'Monday-Friday', '08:30-16:30'),
-(11, 'Elijah Taylor', 'Finance', 'Payroll Specialist', 'Monday-Friday', '08:30-16:30'),
-(12, 'Harper Anderson', 'Finance', 'Budget Analyst', 'Monday-Friday', '08:30-16:30'),
-(13, 'James Thomas', 'Sales', 'Account Executive', 'Monday-Friday', '09:00-17:00'),
-(14, 'Evelyn Jackson', 'Sales', 'Sales Representative', 'Monday-Friday', '09:00-17:00'),
-(15, 'Benjamin White', 'Sales', 'Sales Operations Analyst', 'Monday-Friday', '09:00-17:00'),
-(16, 'Abigail Harris', 'Sales', 'Customer Success Associate', 'Monday-Friday', '09:00-17:00'),
-(17, 'Henry Martin', 'Operations', 'Operations Analyst', 'Monday-Friday', '07:00-15:00'),
-(18, 'Ella Thompson', 'Operations', 'Logistics Coordinator', 'Monday-Friday', '07:00-15:00'),
-(19, 'Alexander Lee', 'Operations', 'Facilities Specialist', 'Monday-Friday', '07:00-15:00'),
-(20, 'Scarlett Clark', 'Operations', 'Process Improvement Analyst', 'Monday-Friday', '07:00-15:00');
+INSERT INTO employee (employee_id, employee_name, department, position, work_days, work_hours, role_id) VALUES
+(1, 'Ava Martinez', 'Engineering', 'Software Engineer', 'Monday-Friday', '09:00-17:00', 1),
+(2, 'Liam Chen', 'Engineering', 'QA Engineer', 'Monday-Friday', '09:00-17:00', 1),
+(3, 'Noah Patel', 'Engineering', 'Backend Developer', 'Monday-Friday', '09:00-17:00', 1),
+(4, 'Mia Johnson', 'Engineering', 'Frontend Developer', 'Monday-Friday', '09:00-17:00', 1),
+(5, 'Ethan Garcia', 'Human Resources', 'HR Specialist', 'Monday-Friday', '08:00-16:00', 1),
+(6, 'Sophia Kim', 'Human Resources', 'Recruiter', 'Monday-Friday', '08:00-16:00', 1),
+(7, 'Lucas Brown', 'Human Resources', 'Training Coordinator', 'Monday-Friday', '08:00-16:00', 1),
+(8, 'Isabella Davis', 'Human Resources', 'Benefits Analyst', 'Monday-Friday', '08:00-16:00', 2),
+(9, 'Oliver Wilson', 'Finance', 'Financial Analyst', 'Monday-Friday', '08:30-16:30', 2),
+(10, 'Amelia Moore', 'Finance', 'Accountant', 'Monday-Friday', '08:30-16:30', 2),
+(11, 'Elijah Taylor', 'Finance', 'Payroll Specialist', 'Monday-Friday', '08:30-16:30', 2),
+(12, 'Harper Anderson', 'Finance', 'Budget Analyst', 'Monday-Friday', '08:30-16:30', 2),
+(13, 'James Thomas', 'Sales', 'Account Executive', 'Monday-Friday', '09:00-17:00', 2),
+(14, 'Evelyn Jackson', 'Sales', 'Sales Representative', 'Monday-Friday', '09:00-17:00', 1),
+(15, 'Benjamin White', 'Sales', 'Sales Operations Analyst', 'Monday-Friday', '09:00-17:00', 1),
+(16, 'Abigail Harris', 'Sales', 'Customer Success Associate', 'Monday-Friday', '09:00-17:00', 2),
+(17, 'Henry Martin', 'Operations', 'Operations Analyst', 'Monday-Friday', '07:00-15:00', 1),
+(18, 'Ella Thompson', 'Operations', 'Logistics Coordinator', 'Monday-Friday', '07:00-15:00', 3),
+(19, 'Alexander Lee', 'Operations', 'Facilities Specialist', 'Monday-Friday', '07:00-15:00', 3),
+(20, 'Grace Thompson', 'HR', 'Process Improvement Analyst', 'Monday-Friday', '07:00-15:00', 3),
+(21, 'Daniel Rodriguez', 'HR', 'Process Improvement Analyst', 'Monday-Friday', '07:00-15:00', 3),
+(22, 'Chloe Wilson', 'Operations', 'Process Improvement Analyst', 'Monday-Friday', '07:00-15:00', 2),
+(23, 'Michael Lee', 'Operations', 'Process Improvement Analyst', 'Monday-Friday', '07:00-15:00', 2),
+(24, 'Nora Williams', 'Operations', 'Process Improvement Analyst', 'Monday-Friday', '07:00-15:00', 2),
+(25, 'Scarlett Clark', 'Operations', 'Process Improvement Analyst', 'Monday-Friday', '07:00-15:00', 2);
 
 ALTER TABLE employee 
-ALTER COLUMN employee_id RESTART WITH 21;
+ALTER COLUMN employee_id RESTART WITH 26;
 
-INSERT INTO manager (manager_id, manager_name) VALUES
-(1, 'Grace Thompson'),
-(2, 'Daniel Rodriguez'),
-(3, 'Chloe Wilson'),
-(4, 'Michael Lee'),
-(5, 'Nora Williams');
+INSERT INTO manager (manager_id, employee_id, manager_name) VALUES
+(1, 20, 'Grace Thompson'),
+(2, 21, 'Daniel Rodriguez'),
+(3, 22, 'Chloe Wilson'),
+(4, 23, 'Michael Lee'),
+(5, 24, 'Nora Williams'),
+(6, 25, 'Scarlett Clark');
 
 ALTER TABLE manager 
-ALTER COLUMN manager_id RESTART WITH 6;
+ALTER COLUMN manager_id RESTART WITH 7;
 
 INSERT INTO reporting_lines (employee_id, manager_id) VALUES
 (1, 1),
 (1, 2),
 (1, 3),
+(1, 6),
 (2, 1),
 (2, 4),
 (2, 5),
@@ -94,10 +101,10 @@ ALTER COLUMN workday_id RESTART WITH 9;
 
 INSERT INTO planned_overtime (po_id, employee_id, workday_id, manager_id, activity, planned_hours, filling_date, planned_date, status) VALUES
 (1, 4, 1, 1, 'Release preparation support', 2, '2026-04-05', '2026-04-10', 'APPROVED'),
-(2, 4, 2, 1, 'Regression test execution', 3, '2026-04-06', '2026-04-11', 'APPROVED'),
+(2, 4, 2, 1, 'Regression test execution', 3, '2026-04-06', '2026-04-11', 'REJECTED'),
 (3, 4, 3, 1, 'Database migration monitoring', 4, '2026-04-07', '2026-04-12', 'APPROVED'),
 (4, 4, 4, 1, 'User interface launch support', 2, '2026-04-08', '2026-04-13', 'APPROVED'),
-(5, 4, 5, 2, 'New hire onboarding session', 2, '2026-04-09', '2026-04-14', 'APPROVED'),
+(5, 4, 5, 2, 'New hire onboarding session', 2, '2026-04-09', '2026-04-14', 'REJECTED'),
 (6, 4, 6, 2, 'Interview schedule coordination', 3, '2026-04-10', '2026-04-15', 'APPROVED'),
 (7, 4, 7, 2, 'Training materials preparation', 2, '2026-04-11', '2026-04-16',  'FOR APPROVAL'),
 (8, 4, 8, 2, 'Benefits enrollment support', 3, '2026-04-12', '2026-04-17', 'APPROVED'),
@@ -128,8 +135,8 @@ INSERT INTO actual_overtime (ao_id, po_id, manager_id, status, activity, rendere
 (8, 11, 3, 'APPROVED', 'Maintained payroll system', 2, 4.50, '2026-04-21', '2026-04-20', '2026-07-20', 'Maintenance completed'),
 (9, 12, 3, 'APPROVED', 'Consolidated annual budget', 4, 10.00, '2026-04-22', '2026-04-21', '2026-07-21', 'Budget submitted'),
 (10, 13, 4, 'APPROVED', 'Finalized client proposal', 3, 6.00, '2026-04-23', '2026-04-22', '2026-07-22', 'Proposal submitted'),
-(11, 14, 4, 'APPROVED', 'Completed campaign follow-up', 2, 4.00, '2026-04-24', '2026-04-23', '2026-07-23', 'Customer responses logged'),
-(12, 15, 4, 'APPROVED', 'Prepared sales reports', 3, 3.75, '2026-04-25', '2026-04-24', '2026-07-24', 'Reports published'),
+(11, 14, 4, 'REJECTED', 'Completed campaign follow-up', 2, 4.00, '2026-04-24', '2026-04-23', '2026-07-23', 'Customer responses logged'),
+(12, 15, 4, 'REJECTED', 'Prepared sales reports', 3, 3.75, '2026-04-25', '2026-04-24', '2026-07-24', 'Reports published'),
 (13, 16, 4, 'APPROVED', 'Assisted customer renewals', 2, 3.50, '2026-04-26', '2026-04-25', '2026-07-25', 'Renewal requests handled'),
 (14, 17, 5, 'APPROVED', 'Completed warehouse inventory', 4, 8.00, '2026-04-27', '2026-04-26', '2026-07-26', 'Inventory count confirmed'),
 (15, 18, 5, 'APPROVED', 'Coordinated delayed shipments', 3, 5.25, '2026-04-28', '2026-04-27', '2026-07-27', 'Shipments rescheduled'),

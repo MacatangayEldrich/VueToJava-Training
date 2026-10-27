@@ -3,15 +3,19 @@ package com.example.backend.service.impl;
 import com.example.backend.dao.ActualOvertimeDao;
 import com.example.backend.dto.ActualOvertimeDto;
 import com.example.backend.repository.ActualOvertimeRepository;
+import com.example.backend.repository.ManagerRepository;
 import com.example.backend.service.ActualOvertimeService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ActualOvertimeServiceImpl extends AbstractCrudService<ActualOvertimeDao, ActualOvertimeDto> implements ActualOvertimeService {
     private final ActualOvertimeRepository repository;
-    public ActualOvertimeServiceImpl(ActualOvertimeRepository repository) {
+    private final ManagerRepository managerRepository;
+
+    public ActualOvertimeServiceImpl(ActualOvertimeRepository repository, ManagerRepository managerRepository) {
         super(repository);
         this.repository = repository;
+        this.managerRepository = managerRepository;
     }
 
     protected Long idOf(ActualOvertimeDto dto) { return dto.aoId(); }
@@ -26,19 +30,24 @@ public class ActualOvertimeServiceImpl extends AbstractCrudService<ActualOvertim
                 entity.getActualDate(), entity.getExpirationDate(), entity.getRemarks());
     }
 
-    public ActualOvertimeDto approve(Long id) {
+    public ActualOvertimeDto approve(Long id, Long employeeId) {
         ActualOvertimeDao entity = repository.findById(id).orElseThrow();
-
+        entity.setManagerId(getManagerByEmployeeId(employeeId));
         entity.setStatus("APPROVED");
-
+        
         return toDto(repository.save(entity));
     }
 
-    public ActualOvertimeDto reject(Long id) {
+    public ActualOvertimeDto reject(Long id, Long employeeId) {
         ActualOvertimeDao entity = repository.findById(id).orElseThrow();
-
+        entity.setManagerId(getManagerByEmployeeId(employeeId));
         entity.setStatus("REJECTED");
-
+        
         return toDto(repository.save(entity));
+    }
+
+    private Long getManagerByEmployeeId(Long employeeId) {
+        return managerRepository.findByEmployeeId(employeeId).getManagerId() == null ? '0' : managerRepository.findByEmployeeId(employeeId).getManagerId();
+
     }
 }

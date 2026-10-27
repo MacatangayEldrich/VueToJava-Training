@@ -50,13 +50,13 @@ public class ActualOvertimeController {
         service.delete(id);
     }
 
-    @PutMapping("/{id}/approve")
-    public ActualOvertimeDto approve(@PathVariable Long id) {
-        return service.approve(id);
+    @PutMapping("/{id}/approve/{employeeId}")
+    public ActualOvertimeDto approve(@PathVariable Long id, @PathVariable Long employeeId) {
+        return service.approve(id, employeeId);
     }
 
-    @PutMapping("/{id}/reject")
-    public ActualOvertimeDto reject(@PathVariable Long id) {
-        return service.reject(id);
+    @PutMapping("/{id}/reject/{employeeId}")
+    public ActualOvertimeDto reject(@PathVariable Long id, @PathVariable Long employeeId) {
+        return service.reject(id, employeeId);
     }
 }

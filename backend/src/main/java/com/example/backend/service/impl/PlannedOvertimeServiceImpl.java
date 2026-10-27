@@ -2,6 +2,7 @@ package com.example.backend.service.impl;
 
 import com.example.backend.dao.PlannedOvertimeDao;
 import com.example.backend.dto.PlannedOvertimeDto;
+import com.example.backend.repository.ManagerRepository;
 import com.example.backend.repository.PlannedOvertimeRepository;
 import com.example.backend.service.PlannedOvertimeService;
 
@@ -12,9 +13,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class PlannedOvertimeServiceImpl extends AbstractCrudService<PlannedOvertimeDao, PlannedOvertimeDto> implements PlannedOvertimeService {
     private final PlannedOvertimeRepository repository;
-    public PlannedOvertimeServiceImpl(PlannedOvertimeRepository repository) {
+    private ManagerRepository managerRepository;
+
+    public PlannedOvertimeServiceImpl(PlannedOvertimeRepository repository, ManagerRepository managerRepository) {
         super(repository);
         this.repository = repository;
+        this.managerRepository = managerRepository;
     }
 
     @Override
@@ -33,19 +37,25 @@ public class PlannedOvertimeServiceImpl extends AbstractCrudService<PlannedOvert
                 entity.getFillingDate(), entity.getPlannedDate(), entity.getStatus());
     }
 
-    public PlannedOvertimeDto approve(Long id) {
+    public PlannedOvertimeDto approve(Long id, Long employeeId) {
         PlannedOvertimeDao entity = repository.findById(id).orElseThrow();
-
+        entity.setManagerId(getManagerByEmployeeId(employeeId));
         entity.setStatus("APPROVED");
+        
+        return toDto(repository.save(entity));
+    }
+
+    public PlannedOvertimeDto reject(Long id, Long employeeId) {
+        PlannedOvertimeDao entity = repository.findById(id).orElseThrow();
+        entity.setManagerId(getManagerByEmployeeId(employeeId));
+        entity.setStatus("REJECTED");
+        
 
         return toDto(repository.save(entity));
     }
 
-    public PlannedOvertimeDto reject(Long id) {
-        PlannedOvertimeDao entity = repository.findById(id).orElseThrow();
+    private Long getManagerByEmployeeId(Long employeeId) {
+        return managerRepository.findByEmployeeId(employeeId).getManagerId() == null ? '0' : managerRepository.findByEmployeeId(employeeId).getManagerId();
 
-        entity.setStatus("REJECTED");
-
-        return toDto(repository.save(entity));
     }
 }
