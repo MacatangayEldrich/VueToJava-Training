@@ -15,12 +15,13 @@ const overtimeSyncStore = useOvertimeSyncStore()
 
 const showPopup = ref(false)
 const detailError = ref<string | null>(null)
+const selectedRequestType = ref<string | null>(null)
 
 const viewIcon = '\u{1F50D}'
 const requestType = 'Overtime Request'
 
 const openRequest = async (request: ApprovalListItem) => {
-	if (request.requestType !== 'Overtime Request') return // for removal upon Actual Overtime approval implementation
+	selectedRequestType.value = request.requestType
     detailError.value = null
     try {
         await overtimeStore.loadPlannedOvertimeDetails(request.requestId)
@@ -46,6 +47,7 @@ watch(
 
 const requestDetails = computed(() => ({
 	...(overtimeStore.plannedRequest ?? {}),
+	requestType: selectedRequestType.value,
 	employeeName: overtimeStore.plannedRequest
 		? masterDataStore.employees[overtimeStore.plannedRequest.employeeId]?.employeeName
 		: undefined,
