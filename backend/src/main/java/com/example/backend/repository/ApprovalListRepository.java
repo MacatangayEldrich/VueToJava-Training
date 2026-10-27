@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface ApprovalListRepository {
     List<ApprovalListDto> findAllByManagerId(Long managerId);
-    List<ApprovalListDto> findAll();
 
     List<PlannedOvertimeDto> findActualPlannedOTByEmployeeId(Long employeeId);
 }
