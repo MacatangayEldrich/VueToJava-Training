@@ -9,7 +9,7 @@ const masterDataStore = useMasterDataStore()
 const overtimeSyncStore = useOvertimeSyncStore()
 const { workdayTypes } = storeToRefs(masterDataStore)
 const props = defineProps<{ plan: PlannedOvertime }>()
-const emit = defineEmits<{ submit: [entry: ActualOvertime] }>()
+const emit = defineEmits<{ submit: [entry: ActualOvertime], saved: [] }>()
 const isSubmitted = ref(false)
 const errorMessage = ref('')
 const today = localDateValue(new Date())
@@ -71,6 +71,7 @@ async function submitForm() {
 		if (!response.ok) throw new Error(`Unable to submit actual overtime (${response.status})`)
 		overtimeSyncStore.notifyOvertimeChanged()
 		isSubmitted.value = true
+		emit('saved')
 	} catch (error) {
 		errorMessage.value = error instanceof Error ? error.message : 'Unable to submit actual overtime.'
 	}

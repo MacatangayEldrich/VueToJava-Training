@@ -97,6 +97,11 @@ function formatDate(dateValue: string) {
 function editPlannedOT(plan: PlannedOvertime) {
   selectedPlanId.value = selectedPlanId.value === plan.poId ? null : plan.poId
 }
+
+function closeActualOvertimeForm(){
+  selectedPlanId.value = null
+}
+
 </script>
 
 <template>
@@ -123,7 +128,7 @@ function editPlannedOT(plan: PlannedOvertime) {
         <button v-if="plan.status ==='APPROVED' && usedPoIds.has(plan.poId)" type="button" @click="editPlannedOT(plan)" class="action-btn primary">
           <span>📝</span>
         </button>
-        <ActualOvertimeForm class="overtime-forms" v-if="selectedPlanId == plan.poId" :plan="plan"/>
+        <ActualOvertimeForm class="overtime-forms" v-if="selectedPlanId == plan.poId" :plan="plan" @saved="closeActualOvertimeForm"/>
       </article>
     </div>
     <p v-else class="empty-state">No overtime planned yet. Add a plan above to keep track of upcoming work.</p>
