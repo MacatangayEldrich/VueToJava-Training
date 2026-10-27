@@ -118,6 +118,7 @@ export const useOvertimeRequestStore = defineStore(
                 }
 
                 actualRequest.value = await response.json()
+                overtimeSyncStore.notifyOvertimeChanged()
             } catch (e) {
                 error.value = e instanceof Error ? e.message : 'Unknown error'
             }
@@ -140,6 +141,7 @@ export const useOvertimeRequestStore = defineStore(
                 }
 
                 actualRequest.value = await response.json()
+                overtimeSyncStore.notifyOvertimeChanged()
             } catch (e) {
                 error.value = e instanceof Error ? e.message : 'Unknown error'
             }
