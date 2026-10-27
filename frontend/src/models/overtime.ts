@@ -36,8 +36,8 @@ export interface PlannedOvertimeFormValues {
 
 export interface ActualOvertimeInput {
     dateEarned: string
-    factorRate: number
     overtimeHours: number
+    activity: string
 }
 
 export interface OvertimeEntry {
@@ -47,4 +47,16 @@ export interface OvertimeEntry {
     overtimeHours: number
     ctoHours: number
     expirationDate: string
+}
+
+export interface ActualOvertime {
+	poId: number
+	status : string
+	activity : string
+	renderedHours : number
+	earnedHours : number
+	fillingDate : string
+	actualDate: string
+	expirationDate : string
+	remarks : string
 }

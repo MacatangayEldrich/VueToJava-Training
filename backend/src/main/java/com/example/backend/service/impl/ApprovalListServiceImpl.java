@@ -1,6 +1,7 @@
 package com.example.backend.service.impl;
 
 import com.example.backend.dto.ApprovalListDto;
+import com.example.backend.dto.PlannedOvertimeDto;
 import com.example.backend.repository.ApprovalListRepository;
 import com.example.backend.repository.ManagerRepository;
 import com.example.backend.service.ApprovalListService;
@@ -27,5 +28,10 @@ public class ApprovalListServiceImpl implements ApprovalListService {
     private Long getManagerByEmployeeId(Long employeeId) {
         return managerRepository.findByEmployeeId(employeeId).getManagerId() == null ? '0' : managerRepository.findByEmployeeId(employeeId).getManagerId();
 
+    }
+
+    @Override
+    public List<PlannedOvertimeDto> findActualPlannedOTByEmployeeId(Long employeeId) {
+        return repository.findActualPlannedOTByEmployeeId(employeeId);
     }
 }

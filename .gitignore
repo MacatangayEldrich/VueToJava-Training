@@ -27,4 +27,4 @@ replay_pid*
 backend/target/
 
 package-lock.json
-.vscode
+.vscode/settings.json

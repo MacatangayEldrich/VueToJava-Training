@@ -6,6 +6,9 @@ import com.example.backend.repository.ManagerRepository;
 import com.example.backend.repository.PlannedOvertimeRepository;
 import com.example.backend.service.PlannedOvertimeService;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,6 +30,7 @@ public class PlannedOvertimeServiceImpl extends AbstractCrudService<PlannedOvert
     }
 
     protected Long idOf(PlannedOvertimeDto dto) { return dto.poId(); }
+
     protected PlannedOvertimeDao toEntity(PlannedOvertimeDto dto) {
         return new PlannedOvertimeDao(dto.employeeId(), dto.workdayId(), dto.managerId(),
                 dto.activity(), dto.plannedHours(), dto.fillingDate(), dto.plannedDate(), dto.status());

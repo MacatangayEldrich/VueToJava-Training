@@ -40,7 +40,7 @@ button {
 }
 
 button:disabled {
-  cursor: wait;
+  cursor: none;
   opacity: 0.55;
 }
 
@@ -1078,6 +1078,7 @@ code {
 
 .overtime-forms {
   display: grid;
+  grid-column: 1 / -1;
   gap: 13px;
   margin: 4px 0 14px;
 }
@@ -1173,6 +1174,11 @@ code {
 }
 
 .coral-submit {
+  cursor: pointer;
+  background: #ffd0c4;
+}
+
+.coral-submit {
   background: #ffd0c4;
 }
 
@@ -1201,12 +1207,12 @@ code {
 .plan-header,
 .plan-item {
   display: grid;
-  grid-template-columns: 120px minmax(0, 1fr) auto;
+  grid-template-columns: 120px minmax(0, 1fr) 120px 120px 120px;
   align-items: center;
-  gap: 12px;
+  gap: 5px;
   min-height: 51px;
   border-bottom: 1px solid rgba(203, 212, 202, 0.72);
-  font-size: 10px;
+  font-size: 13px;
 }
 
 .plan-item:last-child {
@@ -1222,9 +1228,13 @@ code {
 
 .plan-item strong {
   overflow: hidden;
-  color: var(--ink);
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.plan-header > *,
+.plan-item > * {
+  min-width: 0;
 }
 
 .ledger-note {
@@ -1347,9 +1357,10 @@ code {
   }
 
   .plan-item {
-    grid-template-columns: 1fr auto;
-    gap: 5px 10px;
-    padding: 9px 0;
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 5px ;
+    padding: 1px;
   }
 
   .plan-item time {
@@ -1361,6 +1372,12 @@ code {
   }
 
   .plan-item > span {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    text-align: right;
+  }
+
+  .plan-item button {
     grid-column: 2;
     grid-row: 1 / span 2;
     text-align: right;
@@ -1387,3 +1404,34 @@ code {
   display: flex;
   align-items: center;
 }
+
+.action-btn {
+    display: inherit;
+    justify-content: center;
+    gap: 1px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    padding: 1px;
+    font: inherit;
+    font-size: .80rem;
+    font-weight: 10;
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .action-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  .action-btn.primary {
+    background: rgba(11, 10, 253, 0.08);
+    color: #0d6efd;
+    border-color: rgba(13, 110, 253, 0.2);
+  }
+
+  .action-icon {
+    width: 2px;
+    height: 2px;
+    flex-shrink: 0;
+  }
