@@ -24,12 +24,7 @@ public class ApprovalListController {
     public List<ApprovalListDto> findAllByManagerId(@PathVariable Long employeeId) {
         return service.findAllByManagerId(employeeId);
       
-    }
-  
-    @GetMapping
-    public List<ApprovalListDto> findAll() {
-        return service.findAll();
-    }       
+    }      
 
     @GetMapping("/actual-planned-overtimes-by-employee/{employeeId}")
     public List<PlannedOvertimeDto> findActualPlannedOTByEmployeeId(@PathVariable Long employeeId) {
