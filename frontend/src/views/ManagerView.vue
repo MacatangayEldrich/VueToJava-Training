@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import ApprovalList from '../components/ApprovalList.vue'
+import ActualOTApprovalList from '../components/ActualOTApprovalList.vue';
+import PlannedOTApprovalList from '../components/PlannedOTApprovalList.vue';
+import { useMasterDataStore } from '../stores/masterDataStore'
+
+const props = defineProps<{ employeeId: number }>()
+
 
 const formattedDate = new Intl.DateTimeFormat('en-US', {
   weekday: 'long',
@@ -14,6 +19,7 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
   <section class="route-view" aria-labelledby="manager-title">
     <p class="eyebrow">{{ formattedDate }}<span class="heading-divider">/</span> Manager space</p>
 
-    <ApprovalList />
+    <PlannedOTApprovalList :employee-id="props.employeeId"/>
+    <ActualOTApprovalList :employee-id="props.employeeId"/>
   </section>
 </template>

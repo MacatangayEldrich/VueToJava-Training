@@ -3,16 +3,15 @@ import { useOvertimeRequestStore } from '../stores/overtimeRequestStore'
 
 const overtimeStore = useOvertimeRequestStore()
 
-const props = defineProps<{ request: any }>()
-
+const props = defineProps<{ request: any, employeeId: number }>()
 const approveRequest = async () => {
-    await overtimeStore.approveRequest(props.request.poId)
+    await overtimeStore.approveActualRequest(props.request.aoId, props.employeeId)
 
     emit('close')
 }
 
 const rejectRequest = async () => {
-    await overtimeStore.rejectRequest(props.request.poId)
+    await overtimeStore.rejectActualRequest(props.request.aoId, props.employeeId)
 
     emit('close')
 }
@@ -22,11 +21,11 @@ const emit = defineEmits<{ close: []}>()
 <template>
     <form class="content-section overtime-form plan-form">
         <div class="section-heading">
-            <div><h2>Request Details</h2></div>
+            <div><h2>Actual Overtime Request Details</h2></div>
         </div>
         <label>
             Request Type
-            <div class="field-value">{{ props.request?.poId }}</div>
+            <div class="field-value">{{ props.request?.aoId }}</div>
         </label>
         <label>
             Request Date
@@ -42,25 +41,33 @@ const emit = defineEmits<{ close: []}>()
         </label>
         <div class="form-row">
             <label>
-                Planned Date
-                <div class="field-value">{{ props.request?.plannedDate }}</div>
+                Actual Date
+                <div class="field-value">{{ props.request?.actualDate }}</div>
             </label>
             <label>
-                Planned hours
-                <div class="field-value">{{ props.request?.plannedHours }}</div>
+                Rendered hours
+                <div class="field-value">{{ props.request?.renderedHours }}</div>
             </label>
         </div>
         <label>
-            Workday Type
+             Workday Type
             <div class="field-value">{{ props.request?.workdayName }}</div>
         </label>
         <label>
+            Earned Hours
+            <div class="field-value">{{ props.request?.earnedHours }}</div>
+        </label>
+        <label>
             Work / reason
-            <div class="field-value">{{ props.request?.otDescription }}</div>
+            <div class="field-value">{{ props.request?.activity }}</div>
+        </label>
+        <label>
+            Remarks
+            <div class="field-value">{{ props.request?.remarks }}</div>
         </label>
         <div class="form-row">
-            <button class="submit-button coral-submit" type="button" @click="rejectRequest">Reject</button>
-            <button class="submit-button" type="button" @click="approveRequest">Approve</button>
+            <button class="submit-button coral-submit" type="button" v-if="props.request?.status === 'APPROVED'" @click="rejectRequest">Reject</button>
+            <button class="submit-button" type="button" v-if="props.request?.status === 'REJECTED'" @click="approveRequest">Approve</button>
         </div>
     </form>
 </template>

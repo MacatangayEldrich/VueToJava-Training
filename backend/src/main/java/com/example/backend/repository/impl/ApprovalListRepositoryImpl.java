@@ -17,23 +17,26 @@ public class ApprovalListRepositoryImpl implements ApprovalListRepository {
     private EntityManager entityManager;
 
     @Override
-    public List<ApprovalListDto> findAll() {
+    public List<ApprovalListDto> findAllByManagerId(Long managerId) {
         String sql = """
             SELECT
                 p.PO_ID AS REQUEST_ID, 
                 'Overtime Request' AS TYPE, 
+                e.EMPLOYEE_ID,
                 e.EMPLOYEE_NAME, 
                 p.FILLING_DATE, 
                 p.STATUS
             FROM PLANNED_OVERTIME p
             INNER JOIN EMPLOYEE e
                 ON p.EMPLOYEE_ID = e.EMPLOYEE_ID
+            where p.MANAGER_ID = :managerId
 
             UNION ALL
             
             SELECT 
                 a.AO_ID AS REQUEST_ID, 
                 'Actual Overtime' AS TYPE, 
+                e.EMPLOYEE_ID,
                 e.EMPLOYEE_NAME, 
                 a.FILLING_DATE,  
                 a.STATUS
@@ -42,11 +45,13 @@ public class ApprovalListRepositoryImpl implements ApprovalListRepository {
                 ON p.PO_ID = a.PO_ID
             INNER JOIN EMPLOYEE e
                 ON p.EMPLOYEE_ID = e.EMPLOYEE_ID
+            where p.MANAGER_ID = :managerId
 
             ORDER BY FILLING_DATE;
             """;
 
         Query query = entityManager.createNativeQuery(sql);
+        query.setParameter("managerId", managerId);
 
         @SuppressWarnings("unchecked")
         List<Object[]> rows = query.getResultList();
@@ -55,9 +60,10 @@ public class ApprovalListRepositoryImpl implements ApprovalListRepository {
                 .map(row -> new ApprovalListDto(
                     ((Number) row[0]).longValue(),
                     (String) row[1],
-                    (String) row[2],
-                    ((Date) row[3]).toLocalDate(),
-                    (String) row[4]))
+                    ((Number) row[2]).longValue(),
+                    (String) row[3],
+                    ((Date) row[4]).toLocalDate(),
+                    (String) row[5]))
                 .toList();
     }
 

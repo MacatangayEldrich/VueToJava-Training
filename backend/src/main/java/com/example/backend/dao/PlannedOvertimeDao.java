@@ -67,4 +67,8 @@ public class PlannedOvertimeDao {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public void setManagerId(Long managerId) {
+        this.managerId = managerId;
+    }
 }

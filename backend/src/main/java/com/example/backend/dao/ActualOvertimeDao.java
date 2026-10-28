@@ -108,4 +108,13 @@ public class ActualOvertimeDao {
     public String getRemarks() {
         return remarks;
     }
+
+    
+    public void setManagerId(Long managerId) {
+        this.managerId = managerId;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

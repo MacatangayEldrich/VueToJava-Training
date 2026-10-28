@@ -1,15 +1,16 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { PlannedOvertime } from '../models/overtime'
+import type { PlannedOvertime, ActualOvertime } from '../models/overtime'
 
 export const useOvertimeRequestStore = defineStore(
     'overtimeRequest',
     () => {
-        const request = ref<PlannedOvertime | null>(null)
+        const plannedRequest = ref<PlannedOvertime | null>(null)
+        const actualRequest = ref<ActualOvertime | null>(null)
         const loading = ref(false)
         const error = ref<string | null>(null)
 
-        const loadOvertimeDetails = async(
+        const loadPlannedOvertimeDetails = async(
             requestId: number
         ) => {
             loading.value = true
@@ -22,7 +23,7 @@ export const useOvertimeRequestStore = defineStore(
                     throw new Error(`Failed to load (${response.status})`)
                 }
 
-                request.value = await response.json()
+                plannedRequest.value = await response.json()
             } catch (e) {
                 error.value = e instanceof Error ? e.message : 'Unknown error'
             } finally {
@@ -31,11 +32,34 @@ export const useOvertimeRequestStore = defineStore(
 
         }
 
-        const approveRequest = async(
+        const loadActualOvertimeDetails = async(
             requestId: number
         ) => {
+            loading.value = true
+            error.value = null
+            
             try {
-                const response = await fetch (`/v1/planned-overtimes/${requestId}/approve`,
+                const response = await fetch (`/v1/actual-overtimes/${requestId}`)
+
+                if(!response.ok) {
+                    throw new Error(`Failed to load (${response.status})`)
+                }
+
+                actualRequest.value = await response.json()
+            } catch (e) {
+                error.value = e instanceof Error ? e.message : 'Unknown error'
+            } finally {
+                loading.value = false
+            }
+
+        }
+
+        const approvePlannedRequest = async(
+            requestId: number,
+            employeeId: number
+        ) => {
+            try {
+                const response = await fetch (`/v1/planned-overtimes/${requestId}/approve/${employeeId}`,
                     {
                         method: 'PUT'
                     }
@@ -45,18 +69,19 @@ export const useOvertimeRequestStore = defineStore(
                     throw new Error(`Failed to approve (${response.status})`)
                 }
 
-                request.value = await response.json()
+                plannedRequest.value = await response.json()
             } catch (e) {
                 error.value = e instanceof Error ? e.message : 'Unknown error'
             }
 
         }
 
-        const rejectRequest = async(
-            requestId: number
+        const rejectPlannedRequest = async(
+            requestId: number,
+            employeeId: number
         ) => {
             try {
-                const response = await fetch (`/v1/planned-overtimes/${requestId}/reject`,
+                const response = await fetch (`/v1/planned-overtimes/${requestId}/reject/${employeeId}`,
                     {
                         method: 'PUT'
                     }
@@ -66,7 +91,51 @@ export const useOvertimeRequestStore = defineStore(
                     throw new Error(`Failed to reject (${response.status})`)
                 }
 
-                request.value = await response.json()
+                plannedRequest.value = await response.json()
+            } catch (e) {
+                error.value = e instanceof Error ? e.message : 'Unknown error'
+            }
+
+        }
+
+        const approveActualRequest = async(
+            requestId: number,
+            employeeId: number
+        ) => {
+            try {
+                const response = await fetch (`/v1/actual-overtimes/${requestId}/approve/${employeeId}`,
+                    {
+                        method: 'PUT'
+                    }
+                )
+
+                if(!response.ok) {
+                    throw new Error(`Failed to approve (${response.status})`)
+                }
+
+                actualRequest.value = await response.json()
+            } catch (e) {
+                error.value = e instanceof Error ? e.message : 'Unknown error'
+            }
+
+        }
+
+        const rejectActualRequest = async(
+            requestId: number,
+            employeeId: number
+        ) => {
+            try {
+                const response = await fetch (`/v1/actual-overtimes/${requestId}/reject/${employeeId}`,
+                    {
+                        method: 'PUT'
+                    }
+                )
+
+                if(!response.ok) {
+                    throw new Error(`Failed to reject (${response.status})`)
+                }
+
+                actualRequest.value = await response.json()
             } catch (e) {
                 error.value = e instanceof Error ? e.message : 'Unknown error'
             }
@@ -74,12 +143,16 @@ export const useOvertimeRequestStore = defineStore(
         }
 
         return {
-            request,
+            plannedRequest,
+            actualRequest,
             loading,
             error,
-            loadOvertimeDetails,
-            approveRequest,
-            rejectRequest
+            loadPlannedOvertimeDetails,
+            loadActualOvertimeDetails,
+            approvePlannedRequest,
+            rejectPlannedRequest,
+            approveActualRequest,
+            rejectActualRequest
         }
     }
 )
