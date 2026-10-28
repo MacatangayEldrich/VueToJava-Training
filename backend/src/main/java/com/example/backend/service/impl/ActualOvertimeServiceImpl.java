@@ -34,7 +34,7 @@ public class ActualOvertimeServiceImpl extends AbstractCrudService<ActualOvertim
 
     public ActualOvertimeDto approve(Long id, Long employeeId) {
         ActualOvertimeDao entity = repository.findById(id).orElseThrow();
-        entity.setManagerId(getManagerByEmployeeId(employeeId));
+        entity.setManagerId(getManagerIdByEmployeeId(employeeId));
         entity.setStatus("APPROVED");
         
         return toDto(repository.save(entity));
@@ -42,14 +42,14 @@ public class ActualOvertimeServiceImpl extends AbstractCrudService<ActualOvertim
 
     public ActualOvertimeDto reject(Long id, Long employeeId) {
         ActualOvertimeDao entity = repository.findById(id).orElseThrow();
-        entity.setManagerId(getManagerByEmployeeId(employeeId));
+        entity.setManagerId(getManagerIdByEmployeeId(employeeId));
         entity.setStatus("REJECTED");
         
         return toDto(repository.save(entity));
     }
 
-    private Long getManagerByEmployeeId(Long employeeId) {
-        return managerRepository.findByEmployeeId(employeeId).getManagerId() == null ? '0' : managerRepository.findByEmployeeId(employeeId).getManagerId();
+    private Long getManagerIdByEmployeeId(Long employeeId) {
+        return managerRepository.findByEmployeeId(employeeId).getManagerId();
 
     }
 }

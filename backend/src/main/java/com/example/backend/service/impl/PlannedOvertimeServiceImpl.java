@@ -43,7 +43,7 @@ public class PlannedOvertimeServiceImpl extends AbstractCrudService<PlannedOvert
 
     public PlannedOvertimeDto approve(Long id, Long employeeId) {
         PlannedOvertimeDao entity = repository.findById(id).orElseThrow();
-        entity.setManagerId(getManagerByEmployeeId(employeeId));
+        entity.setManagerId(getManagerIdByEmployeeId(employeeId));
         entity.setStatus("APPROVED");
         
         return toDto(repository.save(entity));
@@ -51,15 +51,15 @@ public class PlannedOvertimeServiceImpl extends AbstractCrudService<PlannedOvert
 
     public PlannedOvertimeDto reject(Long id, Long employeeId) {
         PlannedOvertimeDao entity = repository.findById(id).orElseThrow();
-        entity.setManagerId(getManagerByEmployeeId(employeeId));
+        entity.setManagerId(getManagerIdByEmployeeId(employeeId));
         entity.setStatus("REJECTED");
         
 
         return toDto(repository.save(entity));
     }
 
-    private Long getManagerByEmployeeId(Long employeeId) {
-        return managerRepository.findByEmployeeId(employeeId).getManagerId() == null ? '0' : managerRepository.findByEmployeeId(employeeId).getManagerId();
+    private Long getManagerIdByEmployeeId(Long employeeId) {
+        return managerRepository.findByEmployeeId(employeeId).getManagerId();
 
     }
 }

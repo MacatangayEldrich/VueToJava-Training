@@ -20,6 +20,6 @@ public class ManagerServiceImpl extends AbstractCrudService<ManagerDao, ManagerD
 
     @Override
     public Long findByEmployeeId(Long id) {
-        return repository.findByEmployeeId(id).getManagerId() == null ? '0' : repository.findByEmployeeId(id).getManagerId();
+        return repository.findByEmployeeId(id).getManagerId();
     }
 }
