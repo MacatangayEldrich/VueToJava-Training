@@ -22,6 +22,7 @@ public class ApprovalListRepositoryImpl implements ApprovalListRepository {
             SELECT
                 p.PO_ID AS REQUEST_ID, 
                 'Overtime Request' AS TYPE, 
+                e.EMPLOYEE_ID,
                 e.EMPLOYEE_NAME, 
                 p.FILLING_DATE, 
                 p.STATUS
@@ -35,6 +36,7 @@ public class ApprovalListRepositoryImpl implements ApprovalListRepository {
             SELECT 
                 a.AO_ID AS REQUEST_ID, 
                 'Actual Overtime' AS TYPE, 
+                e.EMPLOYEE_ID,
                 e.EMPLOYEE_NAME, 
                 a.FILLING_DATE,  
                 a.STATUS
@@ -58,9 +60,10 @@ public class ApprovalListRepositoryImpl implements ApprovalListRepository {
                 .map(row -> new ApprovalListDto(
                     ((Number) row[0]).longValue(),
                     (String) row[1],
-                    (String) row[2],
-                    ((Date) row[3]).toLocalDate(),
-                    (String) row[4]))
+                    ((Number) row[2]).longValue(),
+                    (String) row[3],
+                    ((Date) row[4]).toLocalDate(),
+                    (String) row[5]))
                 .toList();
     }
 
