@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
-import { useApprovalListStore } from '../stores/approvalListStore.js'
-import type { ApprovalListItem } from '../stores/approvalListStore.js'
-import { useOvertimeRequestStore } from '../stores/overtimeRequestStore.js'
-import { useMasterDataStore } from '../stores/masterDataStore.js'
+import { useApprovalListStore } from '../stores/approvalListStore'
+import type { ApprovalListItem } from '../stores/approvalListStore'
+import { useOvertimeRequestStore } from '../stores/overtimeRequestStore'
+import { useMasterDataStore } from '../stores/masterDataStore'
 import RequestDetails from './RequestDetails.vue'
 
 const props = defineProps<{ employeeId: number}>()
@@ -22,7 +22,7 @@ const openRequest = async (request: ApprovalListItem) => {
     try {
         await overtimeStore.loadPlannedOvertimeDetails(request.requestId)
         if (overtimeStore.error) throw new Error(overtimeStore.error)
-        const details = overtimeStore.request
+        const details = overtimeStore.plannedRequest
         if (!details) throw new Error('Unable to load request details.')
 
         await Promise.all([
@@ -40,15 +40,15 @@ onMounted(async () => {
 })
 
 const requestDetails = computed(() => ({
-	...(overtimeStore.request ?? {}),
-	employeeName: overtimeStore.request
-		? masterDataStore.employees[overtimeStore.request.employeeId]?.employeeName
+	...(overtimeStore.plannedRequest ?? {}),
+	employeeName: overtimeStore.plannedRequest
+		? masterDataStore.employees[overtimeStore.plannedRequest.employeeId]?.employeeName
 		: undefined,
-	department: overtimeStore.request
-		? masterDataStore.employees[overtimeStore.request.employeeId]?.department
+	department: overtimeStore.plannedRequest
+		? masterDataStore.employees[overtimeStore.plannedRequest.employeeId]?.department
 		: undefined,
 	workdayName: masterDataStore.workdayTypes.find(
-		(type) => type.workdayId === overtimeStore.request?.workdayId
+		(type) => type.workdayId === overtimeStore.plannedRequest?.workdayId
 	)?.workdayName
 }))
 </script>

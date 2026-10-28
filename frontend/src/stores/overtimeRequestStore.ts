@@ -1,12 +1,13 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { PlannedOvertime } from '../models/overtime'
+import type { PlannedOvertime, ActualOvertime } from '../models/overtime'
 import { useOvertimeSyncStore } from './overtimeSyncStore'
 
 export const useOvertimeRequestStore = defineStore(
     'overtimeRequest',
     () => {
-        const request = ref<PlannedOvertime | null>(null)
+        const plannedRequest = ref<PlannedOvertime | null>(null)
+        const actualRequest = ref<ActualOvertime | null>(null)
         const loading = ref(false)
         const error = ref<string | null>(null)
         const overtimeSyncStore = useOvertimeSyncStore()
@@ -24,7 +25,7 @@ export const useOvertimeRequestStore = defineStore(
                     throw new Error(`Failed to load (${response.status})`)
                 }
 
-                request.value = await response.json()
+                plannedRequest.value = await response.json()
             } catch (e) {
                 error.value = e instanceof Error ? e.message : 'Unknown error'
             } finally {
@@ -46,7 +47,7 @@ export const useOvertimeRequestStore = defineStore(
                     throw new Error(`Failed to load (${response.status})`)
                 }
 
-                request.value = await response.json()
+                actualRequest.value = await response.json()
             } catch (e) {
                 error.value = e instanceof Error ? e.message : 'Unknown error'
             } finally {
@@ -70,7 +71,7 @@ export const useOvertimeRequestStore = defineStore(
                     throw new Error(`Failed to approve (${response.status})`)
                 }
 
-                request.value = await response.json()
+                plannedRequest.value = await response.json()
                 overtimeSyncStore.notifyOvertimeChanged()
             } catch (e) {
                 error.value = e instanceof Error ? e.message : 'Unknown error'
@@ -93,7 +94,7 @@ export const useOvertimeRequestStore = defineStore(
                     throw new Error(`Failed to reject (${response.status})`)
                 }
 
-                request.value = await response.json()
+                plannedRequest.value = await response.json()
                 overtimeSyncStore.notifyOvertimeChanged()
             } catch (e) {
                 error.value = e instanceof Error ? e.message : 'Unknown error'
@@ -116,7 +117,7 @@ export const useOvertimeRequestStore = defineStore(
                     throw new Error(`Failed to approve (${response.status})`)
                 }
 
-                request.value = await response.json()
+                actualRequest.value = await response.json()
             } catch (e) {
                 error.value = e instanceof Error ? e.message : 'Unknown error'
             }
@@ -138,7 +139,7 @@ export const useOvertimeRequestStore = defineStore(
                     throw new Error(`Failed to reject (${response.status})`)
                 }
 
-                request.value = await response.json()
+                actualRequest.value = await response.json()
             } catch (e) {
                 error.value = e instanceof Error ? e.message : 'Unknown error'
             }
@@ -146,7 +147,8 @@ export const useOvertimeRequestStore = defineStore(
         }
 
         return {
-            request,
+            plannedRequest,
+            actualRequest,
             loading,
             error,
             loadPlannedOvertimeDetails,

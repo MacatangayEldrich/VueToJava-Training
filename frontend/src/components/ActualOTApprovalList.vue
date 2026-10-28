@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
-import { useApprovalListStore } from '../stores/approvalListStore.ts'
-import type { ApprovalListItem } from '../stores/approvalListStore.ts'
-import { useOvertimeRequestStore } from '../stores/overtimeRequestStore.js'
-import { useMasterDataStore } from '../stores/masterDataStore.js'
+import type { ActualOvertime, PlannedOvertime } from '../models/overtime'
+import { useApprovalListStore } from '../stores/approvalListStore'
+import type { ApprovalListItem } from '../stores/approvalListStore'
+import { useOvertimeRequestStore } from '../stores/overtimeRequestStore'
+import { useMasterDataStore } from '../stores/masterDataStore'
 import RequestDetails from './RequestDetails.vue'
 
-const props = defineProps<{ employeeId: number}>()
+const props = defineProps<{ employeeId: number, poId: number }>()
 const overtimeStore = useOvertimeRequestStore()
 const approvalStore = useApprovalListStore()
 const masterDataStore = useMasterDataStore()
 const showPopup = ref(false)
 const detailError = ref<string | null>(null)
+const selectedEmployee = ref(null)
 
 const viewIcon = '\u{1F50D}'
 const requestType = 'Actual Overtime'
@@ -19,9 +21,14 @@ const requestType = 'Actual Overtime'
 const openRequest = async (request: ApprovalListItem) => {
     detailError.value = null
     try {
+		selectedEmployee.value = request.employeeId
         await overtimeStore.loadActualOvertimeDetails(request.requestId)
         if (overtimeStore.error) throw new Error(overtimeStore.error)
-        const details = overtimeStore.request
+        const details = overtimeStore.actualRequest
+		await Promise.all([
+            masterDataStore.loadEmployee(request.employeeId),
+            overtimeStore.loadPlannedOvertimeDetails(details.poId)
+        ])
         if (!details) throw new Error('Unable to load request details.')
         showPopup.value = true
     } catch (cause) {
@@ -35,15 +42,11 @@ onMounted(async () => {
 })
 
 const requestDetails = computed(() => ({
-	...(overtimeStore.request ?? {}),
-	employeeName: overtimeStore.request
-		? masterDataStore.employees[overtimeStore.request.employeeId]?.employeeName
-		: undefined,
-	department: overtimeStore.request
-		? masterDataStore.employees[overtimeStore.request.employeeId]?.department
-		: undefined,
+	...(overtimeStore.actualRequest ?? {}),
+	employeeName: masterDataStore.employees[selectedEmployee.value]?.employeeName,
+	department: masterDataStore.employees[selectedEmployee.value]?.department,
 	workdayName: masterDataStore.workdayTypes.find(
-		(type) => type.workdayId === overtimeStore.request?.workdayId
+		(type) => type.workdayId === overtimeStore.plannedRequest?.workdayId
 	)?.workdayName
 }))
 </script>
