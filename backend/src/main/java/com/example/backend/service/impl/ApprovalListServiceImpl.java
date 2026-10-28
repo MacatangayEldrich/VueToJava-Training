@@ -26,7 +26,7 @@ public class ApprovalListServiceImpl implements ApprovalListService {
     }
 
     private Long getManagerByEmployeeId(Long employeeId) {
-        return managerRepository.findByEmployeeId(employeeId).getManagerId() == null ? '0' : managerRepository.findByEmployeeId(employeeId).getManagerId();
+        return managerRepository.findByEmployeeId(employeeId).getManagerId();
 
     }
 
