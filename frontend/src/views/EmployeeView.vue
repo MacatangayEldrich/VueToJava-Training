@@ -94,8 +94,6 @@ function submitPlan() {
 
     <div class="overtime-forms">
       <PlannedOvertimeForm :today="today" :employee-id="props.employeeId" @submit="submitPlan" />
-
-      <!-- <ActualOvertimeForm :today="today" @submit="submitActual" /> -->
     </div>
 
     

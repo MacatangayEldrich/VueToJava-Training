@@ -4,6 +4,7 @@ import { ref } from 'vue'
 export interface ApprovalListItem {
     requestId: number
     requestType: string
+    employeeId: number
     employeeName: string
     fillingDate: string
     status: string

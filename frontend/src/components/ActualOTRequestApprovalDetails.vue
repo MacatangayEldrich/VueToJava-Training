@@ -50,6 +50,10 @@ const emit = defineEmits<{ close: []}>()
             </label>
         </div>
         <label>
+             Workday Type
+            <div class="field-value">{{ props.request?.workdayName }}</div>
+        </label>
+        <label>
             Earned Hours
             <div class="field-value">{{ props.request?.earnedHours }}</div>
         </label>
