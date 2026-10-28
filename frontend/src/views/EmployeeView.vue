@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import PlannedOvertimeDetails from '../components/PlannedOvertimeDetails.vue'
 import PlannedOvertimeForm from '../components/PlannedOvertimeForm.vue'
+import OvertimeList from '../components/OvertimeList.vue'
 import type { OvertimeEntry } from '../models/overtime'
 import { useMasterDataStore } from '../stores/masterDataStore'
 
@@ -102,8 +103,7 @@ function submitPlan() {
       :employee-id="props.employeeId"
       :refresh-key="plannedOvertimeRefreshKey"
     />
-    <!-- <PlannedOvertimeListApproval :entries="overtimeEntries" :balance="availableBalance" />
-    <ActualOvertimeListApproval :entries="overtimeEntries" :balance="availableBalance" /> -->
+    <OvertimeList :entries="overtimeEntries" :balance="availableBalance" />
   </section>
 </template>
 
