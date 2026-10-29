@@ -2,10 +2,13 @@ package com.example.backend.service.impl;
 
 import com.example.backend.dao.ActualOvertimeDao;
 import com.example.backend.dto.ActualOvertimeDto;
+import com.example.backend.dto.ActualOvertimeDtoExtended;
 import com.example.backend.repository.ActualOvertimeRepository;
 import com.example.backend.repository.ManagerRepository;
 import com.example.backend.service.ActualOvertimeService;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 
 @Service
@@ -30,6 +33,11 @@ public class ActualOvertimeServiceImpl extends AbstractCrudService<ActualOvertim
         return new ActualOvertimeDto(entity.getAoId(), entity.getPoId(), entity.getManagerId(), entity.getStatus(),
                 entity.getActivity(), entity.getRenderedHours(), entity.getEarnedHours(), entity.getFillingDate(),
                 entity.getActualDate(), entity.getExpirationDate(), entity.getRemarks());
+    }
+
+    @Override
+    public Page<ActualOvertimeDtoExtended> findByEmployeeId(Long employeeId, Pageable pageable) {
+        return repository.findByEmployeeId(employeeId, pageable);
     }
 
     public ActualOvertimeDto approve(Long id, Long employeeId) {
