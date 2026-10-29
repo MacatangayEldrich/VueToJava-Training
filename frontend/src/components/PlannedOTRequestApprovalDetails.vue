@@ -26,7 +26,7 @@ const emit = defineEmits<{ close: []}>()
         </div>
         <label>
             Request Type
-            <div class="field-value">{{ props.request?.poId }}</div>
+            <div class="field-value">{{ props.request?.requestType }}</div>
         </label>
         <label>
             Request Date

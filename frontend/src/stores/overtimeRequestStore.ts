@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { PlannedOvertime, ActualOvertime } from '../models/overtime'
+import { useOvertimeSyncStore } from './overtimeSyncStore'
 
 export const useOvertimeRequestStore = defineStore(
     'overtimeRequest',
@@ -9,6 +10,7 @@ export const useOvertimeRequestStore = defineStore(
         const actualRequest = ref<ActualOvertime | null>(null)
         const loading = ref(false)
         const error = ref<string | null>(null)
+        const overtimeSyncStore = useOvertimeSyncStore()
 
         const loadPlannedOvertimeDetails = async(
             requestId: number
@@ -70,6 +72,7 @@ export const useOvertimeRequestStore = defineStore(
                 }
 
                 plannedRequest.value = await response.json()
+                overtimeSyncStore.notifyOvertimeChanged()
             } catch (e) {
                 error.value = e instanceof Error ? e.message : 'Unknown error'
             }
@@ -92,6 +95,7 @@ export const useOvertimeRequestStore = defineStore(
                 }
 
                 plannedRequest.value = await response.json()
+                overtimeSyncStore.notifyOvertimeChanged()
             } catch (e) {
                 error.value = e instanceof Error ? e.message : 'Unknown error'
             }
@@ -114,6 +118,7 @@ export const useOvertimeRequestStore = defineStore(
                 }
 
                 actualRequest.value = await response.json()
+                overtimeSyncStore.notifyOvertimeChanged()
             } catch (e) {
                 error.value = e instanceof Error ? e.message : 'Unknown error'
             }
@@ -136,6 +141,7 @@ export const useOvertimeRequestStore = defineStore(
                 }
 
                 actualRequest.value = await response.json()
+                overtimeSyncStore.notifyOvertimeChanged()
             } catch (e) {
                 error.value = e instanceof Error ? e.message : 'Unknown error'
             }

@@ -6,7 +6,7 @@ import com.example.backend.dto.PlannedOvertimeDto;
 import java.util.List;
 
 public interface ApprovalListService {
-    List<ApprovalListDto> findAllByManagerId(Long employeeId);
+    List<ApprovalListDto> findAllByManagerEmployeeId(Long employeeId);
 
     List<PlannedOvertimeDto> findActualPlannedOTByEmployeeId(Long employeeId);
 }

@@ -17,9 +17,10 @@ public class ApprovalListRepositoryImpl implements ApprovalListRepository {
     private EntityManager entityManager;
 
     @Override
-    public List<ApprovalListDto> findAllByManagerId(Long managerId) {
+    public List<ApprovalListDto> findAllByManagerEmployeeId(Long employeeId) {
         String sql = """
-            SELECT
+
+        SELECT
                 p.PO_ID AS REQUEST_ID, 
                 'Overtime Request' AS TYPE, 
                 e.EMPLOYEE_ID,
@@ -29,7 +30,11 @@ public class ApprovalListRepositoryImpl implements ApprovalListRepository {
             FROM PLANNED_OVERTIME p
             INNER JOIN EMPLOYEE e
                 ON p.EMPLOYEE_ID = e.EMPLOYEE_ID
-            where p.MANAGER_ID = :managerId
+            INNER JOIN REPORTING_LINES rl
+                ON rl.EMPLOYEE_ID = e.EMPLOYEE_ID
+            INNER JOIN MANAGER m
+                ON m.MANAGER_ID = rl.manager_id
+            WHERE m.EMPLOYEE_ID = :employeeId
 
             UNION ALL
             
@@ -45,13 +50,17 @@ public class ApprovalListRepositoryImpl implements ApprovalListRepository {
                 ON p.PO_ID = a.PO_ID
             INNER JOIN EMPLOYEE e
                 ON p.EMPLOYEE_ID = e.EMPLOYEE_ID
-            where p.MANAGER_ID = :managerId
+            INNER JOIN REPORTING_LINES rl
+                ON rl.EMPLOYEE_ID = e.EMPLOYEE_ID
+            INNER JOIN MANAGER m
+                ON m.MANAGER_ID = rl.manager_id
+            WHERE m.EMPLOYEE_ID = :employeeId
 
             ORDER BY FILLING_DATE;
             """;
 
         Query query = entityManager.createNativeQuery(sql);
-        query.setParameter("managerId", managerId);
+        query.setParameter("employeeId", employeeId);
 
         @SuppressWarnings("unchecked")
         List<Object[]> rows = query.getResultList();

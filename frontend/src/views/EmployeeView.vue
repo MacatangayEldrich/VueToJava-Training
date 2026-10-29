@@ -5,6 +5,7 @@ import PlannedOvertimeForm from '../components/PlannedOvertimeForm.vue'
 import OvertimeList from '../components/OvertimeList.vue'
 import type { OvertimeEntry } from '../models/overtime'
 import { useMasterDataStore } from '../stores/masterDataStore'
+import { useOvertimeSyncStore } from '../stores/overtimeSyncStore'
 
 function localDateValue(date: Date) {
   const year = date.getFullYear()
@@ -16,11 +17,11 @@ function localDateValue(date: Date) {
 const today = localDateValue(new Date())
 const props = defineProps<{ employeeId: number }>()
 const masterDataStore = useMasterDataStore()
+const overtimeSyncStore = useOvertimeSyncStore()
 const employee = computed(() => masterDataStore.employees[props.employeeId])
 const employeeLoading = ref(false)
 const employeeError = ref<string | null>(null)
 const showEmployeeDetails = ref(false)
-const plannedOvertimeRefreshKey = ref(0)
 const overtimeEntries = ref<OvertimeEntry[]>([])
 const employeeInitials = computed(() => employee.value?.employeeName
   .split(/\s+/)
@@ -47,7 +48,7 @@ const availableBalance = computed(() => overtimeEntries.value
   .reduce((total, entry) => total + entry.ctoHours, 0))
 
 function submitPlan() {
-  plannedOvertimeRefreshKey.value += 1
+  overtimeSyncStore.notifyOvertimeChanged()
 }
 </script>
 
@@ -99,7 +100,6 @@ function submitPlan() {
     
     <PlannedOvertimeDetails
       :employee-id="props.employeeId"
-      :refresh-key="plannedOvertimeRefreshKey"
     />
     <OvertimeList :entries="overtimeEntries" :balance="availableBalance" />
   </section>

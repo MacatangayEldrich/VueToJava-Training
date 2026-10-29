@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import ActualOTApprovalList from '../components/ActualOTApprovalList.vue';
 import PlannedOTApprovalList from '../components/PlannedOTApprovalList.vue';
-import { useMasterDataStore } from '../stores/masterDataStore'
 
 const props = defineProps<{ employeeId: number }>()
 

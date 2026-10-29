@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { onMounted, ref, computed } from 'vue'
+import { watch, ref, computed } from 'vue'
 import { useApprovalListStore } from '../stores/approvalListStore'
 import type { ApprovalListItem } from '../stores/approvalListStore'
 import { useOvertimeRequestStore } from '../stores/overtimeRequestStore'
+import { useOvertimeSyncStore } from '../stores/overtimeSyncStore.ts'
 import { useMasterDataStore } from '../stores/masterDataStore'
 import RequestDetails from './RequestDetails.vue'
 
 const props = defineProps<{ employeeId: number}>()
 const overtimeStore = useOvertimeRequestStore()
+const overtimeSyncStore = useOvertimeSyncStore()
 const approvalStore = useApprovalListStore()
 const masterDataStore = useMasterDataStore()
 
@@ -35,11 +37,8 @@ const openRequest = async (request: ApprovalListItem) => {
     }
 }
 
-onMounted(async () => {
-    await approvalStore.loadApprovalList(props.employeeId)  
-})
-
 const requestDetails = computed(() => ({
+	requestType: requestType,
 	...(overtimeStore.plannedRequest ?? {}),
 	employeeName: overtimeStore.plannedRequest
 		? masterDataStore.employees[overtimeStore.plannedRequest.employeeId]?.employeeName
@@ -51,6 +50,13 @@ const requestDetails = computed(() => ({
 		(type) => type.workdayId === overtimeStore.plannedRequest?.workdayId
 	)?.workdayName
 }))
+
+watch(
+	() => overtimeSyncStore.changeVersion,
+	() => approvalStore.loadApprovalList(props.employeeId),
+	{ immediate: true }
+)
+
 </script>
 
 <template>
@@ -59,7 +65,7 @@ const requestDetails = computed(() => ({
 			<div><h2 id="ledger-title">Planned Overtime Approval Queue</h2></div>
 		</div>
 		<div class="table-scroll approval-table">
-			<RequestDetails :show="showPopup" :request="requestDetails" :employee-id="props.employeeId" :requestType="requestType" @close="showPopup = false; approvalStore.loadApprovalList(props.employeeId);" />
+			<RequestDetails :show="showPopup" :request="requestDetails" :employee-id="props.employeeId" :requestType="requestType" @close="showPopup = false; " />
 			<p v-if="detailError" class="form-hint" role="alert">{{ detailError }}</p>
 			<table class="overtime-table">
 				<thead>
@@ -73,19 +79,17 @@ const requestDetails = computed(() => ({
 					</tr>
 				</thead>
 				<tbody>
-					<tr v-for="request in approvalStore.requests" :key="request.requestId">
-						<template v-if="request.requestType === 'Overtime Request'">
-							<td>{{ request.requestId }}</td>
-							<td>{{ request.requestType }}</td>
-							<td>{{ request.employeeName }}</td>
-							<td>{{ request.fillingDate }}</td>
-							<td>{{ request.status }}</td>
-							<td><button @click="openRequest(request)">{{ viewIcon }}</button></td>
-						</template>
+					<tr v-for="request in approvalStore.requests.filter(x => x.requestType === requestType)" :key="request.requestId">
+						<td>{{ request.requestId }}</td>
+						<td>{{ request.requestType }}</td>
+						<td>{{ request.employeeName }}</td>
+						<td>{{ request.fillingDate }}</td>
+						<td>{{ request.status }}</td>
+						<td><button @click="openRequest(request)">{{ viewIcon }}</button></td>
 					</tr>
 				</tbody>
 				<tbody>
-					<tr><td class="table-empty" colspan="5">Showing 1-{{ approvalStore.requests.filter(item => item.requestType  === 'Actual Overtime').length}} of {{ approvalStore.requests.filter(item => item.requestType  === 'Actual Overtime').length}} records</td></tr>
+					<tr><td class="table-empty" colspan="5">Showing 1-{{ approvalStore.requests.filter(x => x.requestType === requestType).length}} of {{ approvalStore.requests.filter(x => x.requestType === requestType).length}} records</td></tr>
 				</tbody>
 			</table>
 		</div>
