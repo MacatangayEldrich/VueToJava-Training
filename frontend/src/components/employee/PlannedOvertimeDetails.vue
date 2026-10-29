@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue'
-import type { ActualOvertime, PlannedOvertime } from '../models/overtime'
-import ActualOvertimeForm from '../components/ActualOvertimeForm.vue' 
+import type { ActualOvertime, PlannedOvertime } from '../../models/overtime.ts'
+import ActualOvertimeForm from './ActualOvertimeForm.vue' 
 import axios from 'axios';
-import { useOvertimeSyncStore } from '../stores/overtimeSyncStore'
+import { useOvertimeSyncStore } from '../../stores/overtimeSyncStore.ts'
 
 interface PlannedOvertimePage {
   content: PlannedOvertime[]

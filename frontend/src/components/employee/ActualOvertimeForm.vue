@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { ActualOvertime, PlannedOvertime } from '../models/overtime'
+import type { ActualOvertimeInput, PlannedOvertime } from '../../models/overtime'
 import { storeToRefs } from 'pinia'
-import { useMasterDataStore } from '../stores/masterDataStore'
-import { useOvertimeSyncStore } from '../stores/overtimeSyncStore'
+import { useMasterDataStore } from '../../stores/masterDataStore'
+import { useOvertimeSyncStore } from '../../stores/overtimeSyncStore'
 
 const masterDataStore = useMasterDataStore()
 const overtimeSyncStore = useOvertimeSyncStore()
 const { workdayTypes } = storeToRefs(masterDataStore)
 const props = defineProps<{ plan: PlannedOvertime }>()
-const emit = defineEmits<{ submit: [entry: ActualOvertime], saved: [] }>()
+const emit = defineEmits<{ submit: [entry: ActualOvertimeInput], saved: [] }>()
 const isSubmitted = ref(false)
 const errorMessage = ref('')
 const today = localDateValue(new Date())
@@ -17,7 +17,7 @@ const factorRateValue = workdayTypes.value.find(
 	p => p.workdayId === props.plan.workdayId)?.factorRate ?? 1
 
 
-const form = ref<ActualOvertime>({ 
+const form = ref<ActualOvertimeInput>({ 
 	poId: props.plan.poId,
 	status : props.plan.status,
 	activity : props.plan.activity,

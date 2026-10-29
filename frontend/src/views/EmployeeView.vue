@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import PlannedOvertimeDetails from '../components/PlannedOvertimeDetails.vue'
-import PlannedOvertimeForm from '../components/PlannedOvertimeForm.vue'
+import PlannedOvertimeDetails from '../components/employee/PlannedOvertimeDetails.vue'
+import PlannedOvertimeForm from '../components/employee/PlannedOvertimeForm.vue'
 import OvertimeList from '../components/OvertimeList.vue'
 import type { OvertimeEntry } from '../models/overtime'
 import { useMasterDataStore } from '../stores/masterDataStore'

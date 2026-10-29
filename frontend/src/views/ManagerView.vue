@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import ActualOTApprovalList from '../components/ActualOTApprovalList.vue';
-import PlannedOTApprovalList from '../components/PlannedOTApprovalList.vue';
+import ActualOTApprovalList from '../components/manager/ActualOTApprovalList.vue';
+import PlannedOTApprovalList from '../components/manager/PlannedOTApprovalList.vue';
 
 const props = defineProps<{ employeeId: number }>()
 

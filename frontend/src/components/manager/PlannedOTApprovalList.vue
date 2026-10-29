@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { watch, ref, computed } from 'vue'
-import { useApprovalListStore } from '../stores/approvalListStore'
-import type { ApprovalListItem } from '../stores/approvalListStore'
-import { useOvertimeRequestStore } from '../stores/overtimeRequestStore'
-import { useOvertimeSyncStore } from '../stores/overtimeSyncStore.ts'
-import { useMasterDataStore } from '../stores/masterDataStore'
+import { useApprovalListStore } from '../../stores/approvalListStore'
+import type { ApprovalListItem } from '../../stores/approvalListStore.ts'
+import { useOvertimeRequestStore } from '../../stores/overtimeRequestStore.ts'
+import { useOvertimeSyncStore } from '../../stores/overtimeSyncStore.ts'
+import { useMasterDataStore } from '../../stores/masterDataStore.ts'
 import RequestDetails from './RequestDetails.vue'
 
 const props = defineProps<{ employeeId: number}>()
