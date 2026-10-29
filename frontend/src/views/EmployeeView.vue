@@ -2,10 +2,10 @@
 import { computed, ref, watch } from 'vue'
 import PlannedOvertimeDetails from '../components/employee/PlannedOvertimeDetails.vue'
 import PlannedOvertimeForm from '../components/employee/PlannedOvertimeForm.vue'
-import OvertimeList from '../components/OvertimeList.vue'
 import type { OvertimeEntry } from '../models/overtime'
 import { useMasterDataStore } from '../stores/masterDataStore'
 import { useOvertimeSyncStore } from '../stores/overtimeSyncStore'
+import ActualOvertimeDetails from '../components/employee/ActualOvertimeDetails.vue'
 
 function localDateValue(date: Date) {
   const year = date.getFullYear()
@@ -101,7 +101,7 @@ function submitPlan() {
     <PlannedOvertimeDetails
       :employee-id="props.employeeId"
     />
-    <OvertimeList :entries="overtimeEntries" :balance="availableBalance" />
+    <ActualOvertimeDetails :employee-id="props.employeeId" />
   </section>
 </template>
 
