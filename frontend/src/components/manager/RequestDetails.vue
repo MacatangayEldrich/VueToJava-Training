@@ -21,10 +21,6 @@ const emit = defineEmits<{ close: []}>()
             </button>
             <PlannedOTRequestApprovalDetails :request="props.request" :employee-id="props.employeeId" v-if="props.requestType === 'Overtime Request'" @close="emit('close')"/>
             <ActualOTRequestApprovalDetails :request="props.request" :employee-id="props.employeeId" v-if="props.requestType === 'Actual Overtime'" @close="emit('close')"/>
-
-            <!-- TODO: Actual Overtime Details -->
-
-            <!-- Not part of MVP: CTO Request Details -->
         </div>
     </div>
 </template>

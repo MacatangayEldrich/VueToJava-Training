@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useOvertimeRequestStore } from '../stores/overtimeRequestStore'
+import { useOvertimeRequestStore } from '../../stores/overtimeRequestStore'
 
 const overtimeStore = useOvertimeRequestStore()
 
@@ -25,7 +25,7 @@ const emit = defineEmits<{ close: []}>()
         </div>
         <label>
             Request Type
-            <div class="field-value">{{ props.request?.aoId }}</div>
+            <div class="field-value">{{ props.request?.requestType }}</div>
         </label>
         <label>
             Request Date
@@ -66,8 +66,8 @@ const emit = defineEmits<{ close: []}>()
             <div class="field-value">{{ props.request?.remarks }}</div>
         </label>
         <div class="form-row">
-            <button class="submit-button coral-submit" type="button" v-if="props.request?.status === 'APPROVED'" @click="rejectRequest">Reject</button>
-            <button class="submit-button" type="button" v-if="props.request?.status === 'REJECTED'" @click="approveRequest">Approve</button>
+            <button class="submit-button coral-submit" type="button" @click="rejectRequest">Reject</button>
+            <button class="submit-button" type="button" @click="approveRequest">Approve</button>
         </div>
     </form>
 </template>

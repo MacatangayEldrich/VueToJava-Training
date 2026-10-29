@@ -20,8 +20,8 @@ public class ApprovalListController {
     }
 
     @GetMapping("/manager/{employeeId}")
-    public List<ApprovalListDto> findAllByManagerId(@PathVariable Long employeeId) {
-        return service.findAllByManagerId(employeeId);
+    public List<ApprovalListDto> findAllByManagerEmployeeId(@PathVariable Long employeeId) {
+        return service.findAllByManagerEmployeeId(employeeId);
       
     }      
 
