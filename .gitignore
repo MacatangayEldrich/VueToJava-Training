@@ -25,3 +25,6 @@ replay_pid*
 
 # Maven build output
 backend/target/
+
+package-lock.json
+.vscode/settings.json
