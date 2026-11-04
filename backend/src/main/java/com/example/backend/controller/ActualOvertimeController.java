@@ -6,6 +6,7 @@ import com.example.backend.service.ActualOvertimeService;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,7 +42,7 @@ public class ActualOvertimeController {
     @GetMapping("/employee/{id}")
     public Page<ActualOvertimeDtoExtended> findByEmployeeId(
             @PathVariable Long id,
-            @PageableDefault(size = 5, sort = {"actualDate", "aoId"}) Pageable pageable) {
+            @PageableDefault(size = 5, sort = {"actualDate", "aoId"}, direction = Direction.DESC) Pageable pageable) {
         return service.findByEmployeeId(id, pageable);
     }
 
