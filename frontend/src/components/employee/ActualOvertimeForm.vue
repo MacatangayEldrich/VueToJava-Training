@@ -39,10 +39,7 @@ const form = ref<ActualOvertimeInput>({
 function expirationDate(dateValue: string) {
 	const [year, month, day] = dateValue.split('-').map(Number)
 	const expiry = new Date(year, month - 1, day)
-	expiry.setFullYear(expiry.getFullYear() + 1)
-	if (expiry.getMonth() !== month - 1) {
-		expiry.setDate(0)
-	}
+	expiry.setDate(expiry.getDate() + 45)
 	return localDateValue(expiry)
 }
 
