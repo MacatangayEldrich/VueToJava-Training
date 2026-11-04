@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useMasterDataStore } from '../stores/masterDataStore'
-import type { PlannedOvertime, PlannedOvertimeCreateRequest, PlannedOvertimeFormValues } from '../models/overtime'
+import { useMasterDataStore } from '../../stores/masterDataStore'
+import type { PlannedOvertime, PlannedOvertimeCreateRequest, PlannedOvertimeFormValues } from '../../models/overtime'
 
 const masterDataStore = useMasterDataStore()
 const { workdayTypes } = storeToRefs(masterDataStore)

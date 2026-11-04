@@ -1,22 +1,23 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { ActualOvertime, PlannedOvertime } from '../models/overtime'
+import type { ActualOvertimeInput, PlannedOvertime } from '../../models/overtime'
 import { storeToRefs } from 'pinia'
-import { useMasterDataStore } from '../stores/masterDataStore'
-import axios from 'axios'
+import { useMasterDataStore } from '../../stores/masterDataStore'
+import { useOvertimeSyncStore } from '../../stores/overtimeSyncStore'
 
 const masterDataStore = useMasterDataStore()
+const overtimeSyncStore = useOvertimeSyncStore()
 const { workdayTypes } = storeToRefs(masterDataStore)
 const props = defineProps<{ plan: PlannedOvertime }>()
-const emit = defineEmits<{ submit: [entry: ActualOvertime] }>()
+const emit = defineEmits<{ submit: [entry: ActualOvertimeInput], saved: [] }>()
 const isSubmitted = ref(false)
+const errorMessage = ref('')
 const today = localDateValue(new Date())
 const factorRateValue = workdayTypes.value.find(
-	p => p.workdayId === props.plan.workdayId ? p.factorRate : 1 
-)?.factorRate
+	p => p.workdayId === props.plan.workdayId)?.factorRate ?? 1
 
 
-const form = ref<ActualOvertime>({ 
+const form = ref<ActualOvertimeInput>({ 
 	poId: props.plan.poId,
 	status : props.plan.status,
 	activity : props.plan.activity,
@@ -61,12 +62,18 @@ async function submitForm() {
 
 	}
 	try {
-		const buttonText = ref('Submit')
-		await axios.post('/v1/actual-overtimes', form.value)
-		buttonText.value = 'Submitted'
+		errorMessage.value = ''
+		const response = await fetch('/v1/actual-overtimes', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(form.value),
+		})
+		if (!response.ok) throw new Error(`Unable to submit actual overtime (${response.status})`)
+		overtimeSyncStore.notifyOvertimeChanged()
 		isSubmitted.value = true
+		emit('saved')
 	} catch (error) {
-		console.log('Error creating actual overtime entry.')
+		errorMessage.value = error instanceof Error ? error.message : 'Unable to submit actual overtime.'
 	}
 }
 </script>
@@ -83,7 +90,7 @@ async function submitForm() {
 		</label>
 		<label>
 			Overtime hours
-			<input v-model.number="form.renderedHours" type="number" min="0.25" step="0.25" :readOnly="isSubmitted" required />
+			<input v-model.number="form.renderedHours" type="number" min="0.5" step="0.5" :readOnly="isSubmitted" required />
 		</label>
 		</div>
 		<label>
@@ -92,6 +99,7 @@ async function submitForm() {
 		</label>
 		<button class="submit-button coral-submit" :disabled="isSubmitted" type="submit" v-if="!isSubmitted">Record actual overtime<span aria-hidden="true">+</span></button>
 		<button class="button actual-submit" :disabled="isSubmitted" type="submit" v-if="isSubmitted" :readOnly="isSubmitted">Submitted<span aria-hidden="true">+</span></button>
+		<p v-if="errorMessage" class="form-hint" role="alert">{{ errorMessage }}</p>
 		<p class="form-hint">CTO earned = overtime hours × factor rate. CTO expires 45 days from the day work was rendered.</p>
 	</form>
 </template>

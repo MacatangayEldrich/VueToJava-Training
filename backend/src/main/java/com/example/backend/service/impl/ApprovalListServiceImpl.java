@@ -21,13 +21,8 @@ public class ApprovalListServiceImpl implements ApprovalListService {
     }
 
     @Override
-    public List<ApprovalListDto> findAllByManagerId(Long employeeId) {
-        return repository.findAllByManagerId(getManagerByEmployeeId(employeeId));
-    }
-
-    private Long getManagerByEmployeeId(Long employeeId) {
-        return managerRepository.findByEmployeeId(employeeId).getManagerId();
-
+    public List<ApprovalListDto> findAllByManagerEmployeeId(Long employeeId) {
+        return repository.findAllByManagerEmployeeId(employeeId);
     }
 
     @Override
