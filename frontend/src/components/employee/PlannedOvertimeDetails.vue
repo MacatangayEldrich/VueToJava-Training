@@ -112,15 +112,15 @@ function closeActualOvertimeForm(){
     <p v-else-if="errorMessage" class="empty-state" role="alert">{{ errorMessage }}</p>
     <div v-else-if="plans.length" class="plan-list">
       <div class="plan-header" style="font-size: 1rem">
-        <strong>Date</strong>
-        <strong>Activity</strong>
-        <strong>Hour/s</strong>
-        <strong>Status</strong>
-        <strong>Action</strong>
+        <span>Date</span>
+        <span>Activity</span>
+        <span>Hour/s</span>
+        <span>Status</span>
+        <span>Action</span>
       </div>
       <article v-for="plan in plans" :key="plan.poId" class="plan-item">
         <time>{{ formatDate(plan.plannedDate) }}</time>
-        <strong>{{ plan.activity }}</strong>
+        <span>{{ plan.activity }}</span>
         <span>{{ plan.plannedHours }}</span>
         <span>{{ plan.status }}</span>
         <button v-if="plan.status ==='APPROVED' && usedPoIds.has(plan.poId)" type="button" @click="editPlannedOT(plan)" class="action-btn primary">
